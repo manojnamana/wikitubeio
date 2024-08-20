@@ -24,7 +24,7 @@ export default function Footer() {
             setValue(newValue);
           }}
         >
-          <Button variant='contained'  color='primary' sx={{height:30,marginRight:3,marginTop:2}}>C.R.E.A.T.E.R</Button>
+          <Button variant='contained' href="/c.r.e.a.t.e.r"  color='primary' sx={{height:30,marginRight:3,marginTop:2}}>C.R.E.A.T.E.R</Button>
           <Button variant='contained' href='/coursemaker' color='primary' sx={{height:30,marginTop:2}}>Course Maker</Button>
         </BottomNavigation>
       </Paper>
