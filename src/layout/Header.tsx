@@ -132,9 +132,9 @@ export default function Header() {
     }
   });
   return (
-    <Box sx={{ display:"flex" }}>
+    <Box sx={{ display:"flex" }} >
       <ThemeProvider  theme={lightTheme}>
-      <AppBar position="static" sx={{backgroundColor:'white'}} >
+      <AppBar position="static" sx={{backgroundColor:'white',width:"100vw"}}  >
         <Toolbar>
           
           <Link

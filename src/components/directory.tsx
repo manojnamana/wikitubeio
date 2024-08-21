@@ -26,7 +26,7 @@ export default function Directory() {
   <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        {/* <Box sx={{  display:"flex" }} >
+        <Box sx={{  display:"flex" }} >
         <Typography
             variant="h6"
             noWrap
@@ -50,7 +50,7 @@ export default function Directory() {
         <MenuItem value={60}>Es</MenuItem>
       </Select>
     </FormControl>    
-        </Box> */}
+        </Box>
 
       <Typography variant='h4' component="div" sx={{pt:5,fontWeight:"bold",pb:1}}>
         Calculus
