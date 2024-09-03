@@ -80,7 +80,7 @@ const TranscriptEditor = () =>{
             <Box sx={{justifyContent:'end',display:"flex"}}>
             <IconButton onClick={handleClickDialogOpen}><CancelIcon color="error" style={{fontSize:35}}/></IconButton>
             </Box>
-            <Typography fontSize={35}  fontWeight={"bold"} textAlign={"center"} pb={2}>WYSIWYG Transcript Editor</Typography>
+            <Typography fontSize={35}  fontFamily = {"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} fontWeight={"500"} textAlign={"center"} pb={2}>WYSIWYG Transcript Editor</Typography>
             {segmentList.map((i,index)=>(
                 <Paper variant="outlined" key ={index} sx={{p:3,m:3}} >
                     <Typography fontWeight={"bold"} pb={2}>Segment {i.id}</Typography>
@@ -97,15 +97,15 @@ const TranscriptEditor = () =>{
                             <TextField type="time" aria-label="End Time"  size="small" fullWidth placeholder="End Time"/>
                         </Grid>
                     </Grid>
-                    <TextField size="medium"  fullWidth sx={{mt:2}}  multiline rows={4} />
+                    <TextField size="medium"  fullWidth sx={{mt:2,fontFamily:"monospace,monospace"}}   multiline rows={4} />
                     <TextField size="small"  fullWidth placeholder="Speaker Name" sx={{mt:2}} />
                     <Box sx={{justifyContent:'end',display:"flex",mt:2}}>
-            <Button variant="contained" sx={{mr:2}}><ContentCopyIcon  style={{fontSize:20}}/></Button>
-            <Button variant="contained" ><SaveIcon  style={{fontSize:20}}/></Button>
+            <Button variant="outlined" sx={{mr:2,backgroundColor:"#F8F9FA",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#F8F9FA"}}}><ContentCopyIcon  style={{fontSize:20}}/></Button>
+            <Button variant="outlined" sx={{backgroundColor:"#F8F9FA",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#F8F9FA"}}}><SaveIcon  style={{fontSize:20}}/></Button>
             </Box>
                      </Paper>
             ))}
-            <Button variant="contained"  sx={{my:2,ml:3}} onClick={addSegment}>Add New Segment</Button>
+            <Button variant="outlined"  sx={{my:2,ml:3,backgroundColor:"#F8F9FA",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#F8F9FA"}}} onClick={addSegment}>Add New Segment</Button>
             
         </Paper>
 

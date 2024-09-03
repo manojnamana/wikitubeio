@@ -34,22 +34,23 @@ export default function CourseMaker () {
     
     return(
 
-        <Stack sx={{display:"flex",flexDirection:'column',alignItems:'center',}}>
-    <Paper elevation={2} sx={{my:3,p:2,width:{md:"45%"}}}>
-        <Typography fontSize={25} fontWeight={"bold"}  textAlign={"center"} py={2} >
+        <Stack sx={{display:"flex",flexDirection:'column',alignItems:'center'}}>
+    <Paper elevation={3}  sx={{my:3,p:2,width:{md:"45%"},}}>
+        <Typography fontSize={25}  fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} textAlign={"center"} py={2} >
         Wikitube Course-Maker
         </Typography>
         <Typography fontSize={15} pb={1}>
         Course Name:
         </Typography>
-        <TextField placeholder="Enter course name" value={courseName}  onChange={(e)=>setCourseName(e.target.value)}fullWidth rows={1}  sx={{mb:2}} />
-        <Typography fontSize={15} pb={1}>
+        <TextField placeholder="Enter course name" size="small" value={courseName}  onChange={(e)=>setCourseName(e.target.value)}fullWidth rows={1}  sx={{mb:2}} />
+
+        <Typography fontSize={15} pb={1} >
         Add Wikipedia Article:
         </Typography>
-        <TextField placeholder="Enter wikipedia article name" value={article}  onChange={(e)=>setArticle(e.target.value)} fullWidth rows={1}  sx={{mb:2}} />
-       { articleCount===12 ?<Button variant="contained" color="success" disabled  >
+        <TextField placeholder="Enter wikipedia article name" size="small" value={article}  onChange={(e)=>setArticle(e.target.value)} fullWidth rows={1}  sx={{mb:2}} />
+       { articleCount===12 ?<Button variant="outlined" sx={{backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} disabled  >
         Add Article
-        </Button> :<Button variant="contained" color="success" onClick={OnAddArticle} >
+        </Button> :<Button variant="outlined" sx={{backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={OnAddArticle} >
         Add Article
         </Button>}
 
@@ -59,9 +60,9 @@ export default function CourseMaker () {
 
         {articlesList.map((i,index)=>(
             <Stack key = {index} mb={2}>
-            <Paper  sx={{bgcolor:"#f1f1f1",display:"flex",justifyContent:"space-between",p:2,alignItems:'center',}}>
+            <Paper elevation={0} sx={{bgcolor:"#f1f1f1",display:"flex",justifyContent:"space-between",p:2,alignItems:'center',}}>
                 <Typography>{i}</Typography>
-                <Button variant="contained" color="error" onClick={() =>{
+                <Button variant="outlined" sx={{backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={() =>{
                     setArticleCount(articleCount-1)
                     setArticlesList([
                         ...articlesList.slice(0, index),
@@ -72,7 +73,7 @@ export default function CourseMaker () {
         </Stack>
         ))}
         
-        <Button variant="contained" color="success" onClick={()=>{setAlertSwitch(true)
+        <Button variant="outlined" sx={{backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={()=>{setAlertSwitch(true)
             setOpen(true);if (articleCount ===0){
               setOpen(false);
             }else{

@@ -12,7 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { Button, Link } from '@mui/material';
+import { Avatar, Button, Link } from '@mui/material';
 import { Logout, VolunteerActivism } from '@mui/icons-material';
 
 
@@ -137,14 +137,17 @@ export default function Header() {
       <AppBar position="static" sx={{backgroundColor:'white',width:"100vw"}}  >
         <Toolbar>
           
-          <Link
-            underline='none'
-            fontSize={25}
-            href ='/'
-            sx={{pr:{xs:2,md:0},color:"black" ,}}
+         
+          <IconButton href='/' sx={{"&:hover":{backgroundColor:"transparent"},alignItems:"end"}}>
+                <Avatar  src="/static/images/wikitube_logo.jpeg" sx={{width:60}} />
+                <Typography
+            fontSize={22}
+            fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"}
+            sx={{pr:{xs:2,md:0},color:"black",display:{xs:"none",md:"block"}}}
           >
-            {"Wikitube"}
-          </Link>
+            Wikitube
+          </Typography>
+              </IconButton>
           <Search >
             <SearchIconWrapper>
               <SearchIcon sx={{color:"black"}}/>

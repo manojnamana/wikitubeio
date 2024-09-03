@@ -3,7 +3,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-import { Button, FormControl, IconButton, Link, MenuItem, Paper, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
+import { Alert, Button, FormControl, IconButton, Link, MenuItem, Paper, Select, SelectChangeEvent, Snackbar, Stack, Typography } from '@mui/material';
+import SwipeableTextMobileStepper from './carousel';
 
 
 export default function Directory() {
@@ -15,6 +16,16 @@ export default function Directory() {
   const [mo4,setNo4] = React.useState(false)
   const [mo5,setNo5] = React.useState(false)
   const [mo6,setNo6] = React.useState(false)
+  const [correctAns,setCorrectAns] = React.useState(false);
+const [open, setOpen] = React.useState(false);
+
+
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
 
   const handleChange = (event: SelectChangeEvent) => {
     setLang(event.target.value);
@@ -52,7 +63,7 @@ export default function Directory() {
     </FormControl>    
         </Box>
 
-      <Typography variant='h4' component="div" sx={{pt:5,fontWeight:"bold",pb:1}}>
+      <Typography variant='h4' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{pt:5,pb:1}}>
         Calculus
       </Typography>
       <hr/>
@@ -91,12 +102,12 @@ export default function Directory() {
   {'Calculus '}
 </Link> 
 
-{calculusvisb&&<Stack>
-  <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
+{calculusvisb&&<Stack >
+  {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
-      <Stack>
+      <Stack >
       <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
-      <Typography textAlign={"center"} >Calculus: Video 1</Typography>
+      <Typography  textAlign={"center"} >Calculus: Video 1</Typography>
       </Stack>
       <Stack>
       <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
@@ -114,8 +125,12 @@ export default function Directory() {
       <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
       <Typography textAlign={"center"} >Calculus: Video 5</Typography>
       </Stack>
+      
     </Stack>
-  </Paper>
+  </Paper> */}
+  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
+  <SwipeableTextMobileStepper/>
+  </Button>
 </Stack>}
  is the mathematical study of continuous change, in the same way that {!mo2?<IconButton color='primary'size='small' onClick={()=>{setNo2(true)}} >[+]</IconButton>:<IconButton size='small' color='primary' onClick={()=>{
         setNo2(false)
@@ -123,7 +138,7 @@ export default function Directory() {
  <Link href="#" underline="none">
   {'geometry'}
 </Link> {mo2&&<Stack>
-  <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
+  {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
       <Stack>
       <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
@@ -146,14 +161,17 @@ export default function Directory() {
       <Typography textAlign={"center"} >geometry: Video 5</Typography>
       </Stack>
     </Stack>
-  </Paper>
+  </Paper> */}
+  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
+  <SwipeableTextMobileStepper/>
+  </Button>
 </Stack>}   is the study of shape and  {!mo3?<IconButton color='primary'size='small' onClick={()=>{setNo3(true)}} >[+]</IconButton>:<IconButton size='small' color='primary' onClick={()=>{
         setNo3(false)
       }} >[-]</IconButton>}
 <Link href="#" underline="none">
   {'algebra'}
 </Link> {mo3&&<Stack>
-  <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
+  {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
       <Stack>
       <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
@@ -176,7 +194,10 @@ export default function Directory() {
       <Typography textAlign={"center"} >algebra: Video 5</Typography>
       </Stack>
     </Stack>
-  </Paper>
+  </Paper> */}
+  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
+  <SwipeableTextMobileStepper/>
+  </Button>
 </Stack>} is the study of generalizations of arithmetic operations.
       </Typography>
       <Typography variant='body1' component="div" sx={{pt:2,}}>
@@ -185,7 +206,7 @@ export default function Directory() {
       }} >[-]</IconButton>} <Link href="#" underline="none">
   {'differential calculus'}
 </Link>{mo4&&<Stack>
-  <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
+  {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
       <Stack>
       <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
@@ -208,14 +229,17 @@ export default function Directory() {
       <Typography textAlign={"center"} >differential calculus: Video 5</Typography>
       </Stack>
     </Stack>
-  </Paper>
+  </Paper> */}
+  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
+  <SwipeableTextMobileStepper/>
+  </Button>
 </Stack>} and  {!mo5?<IconButton color='primary'size='small' onClick={()=>{setNo5(true)}} >[+]</IconButton>:<IconButton size='small' color='primary' onClick={()=>{
         setNo5(false)
       }} >[-]</IconButton>}
       <Link href="#" underline="none">
   {'integral calculus'}
 </Link>{mo5&&<Stack>
-  <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
+  {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
       <Stack>
       <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
@@ -238,14 +262,17 @@ export default function Directory() {
       <Typography textAlign={"center"} >integral calculus: Video 5</Typography>
       </Stack>
     </Stack>
-  </Paper>
+  </Paper> */}
+  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
+  <SwipeableTextMobileStepper/>
+  </Button>
 </Stack>}. The former concerns instantaneous rates of change, and the slopes of curves, while integral calculus concerns accumulation of quantities, and areas under or between curves. These two branches are related to each other by the 
 {!mo6?<IconButton color='primary'size='small' onClick={()=>{setNo6(true)}} >[+]</IconButton>:<IconButton size='small' color='primary' onClick={()=>{
         setNo6(false)
       }} >[-]</IconButton>}<Link href="#" underline="none">
   {'fundamental theorem of calculus.'}
 </Link>{mo6&&<Stack>
-  <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
+  {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
       <Stack>
       <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
@@ -268,21 +295,42 @@ export default function Directory() {
       <Typography textAlign={"center"} >fundamental theorem of calculus: Video 5</Typography>
       </Stack>
     </Stack>
-  </Paper>
+  </Paper> */}
+  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
+  <SwipeableTextMobileStepper/>
+  </Button>
 </Stack>}
       </Typography>
       <Paper elevation={3} sx={{mt:2,p:2,mb:2}}>
-      <Typography variant='h5' component="div" sx={{fontWeight:"bold",pb:1}}>
+      <Typography variant='h5' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{py:1}}>
         Calculus Quiz
       </Typography>
       <hr/>
       <Typography variant='body1' component="div" sx={{pt:2,pb:2}}>
       What is the main focus of calculus?
       </Typography>
-      <Button variant='contained' sx={{mr:2,mb:2,}}>Continuous Change</Button>
-      <Button variant='contained' sx={{mr:2,mb:2}}>Static quantitie</Button>
-      <Button variant='contained' sx={{mr:2,mb:2}}>Discrete numbers</Button>
+      <Button variant='outlined' sx={{mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={()=>{setCorrectAns(true); setOpen(true);}}>Continuous Change</Button>
+      <Button variant='outlined' sx={{mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={()=>{setCorrectAns(false); setOpen(true);}}>Static quantitie</Button>
+      <Button variant='outlined' sx={{mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={()=>{setCorrectAns(false); setOpen(true);}}>Discrete numbers</Button>
       </Paper>
+
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical:"bottom",horizontal:"right"}}>
+  {correctAns ?<Alert
+    onClose={handleClose}
+    severity="success"
+    variant="filled"
+    sx={{ width: '100%' }}
+  >
+   Correct Answer
+  </Alert>:<Alert
+    onClose={handleClose}
+    severity="error"
+    variant="filled"
+    sx={{ width: '100%' }}
+  >
+    Wrong Answer!
+  </Alert>}
+</Snackbar>
       </Container>
     </React.Fragment>
 

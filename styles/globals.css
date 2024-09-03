@@ -5,7 +5,10 @@
     "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
-
+  --background-color:background-color{
+    "#f8f9fa"
+  }
+  
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
@@ -75,12 +78,15 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  background-color:#f8f9fa;
+  
 }
 
 body {

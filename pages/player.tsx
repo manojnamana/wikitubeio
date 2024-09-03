@@ -75,8 +75,6 @@ const [open, setOpen] = React.useState(false);
 
                <Stack display={"flex"} direction={"row"} alignItems={"center"} gap={1} mt={1}>
                 <Avatar
-        // sx={{ bgcolor: "darkorange" }}
-        // alt="3Blue1Brown"
         src="/broken-image.jpg"
       >
       </Avatar>
@@ -85,13 +83,13 @@ const [open, setOpen] = React.useState(false);
                 
                 
                 </Stack> 
-                <Paper sx={{bgcolor:"#f1f1f1",my:2,}} >
+                <Paper sx={{my:2,}} >
                     <Typography p={2}>
                     Many people view calculus as the pinnacle of high school math. But actually, it's an introduction to some very simple and elegant ideas that use the math we already know. If we teach kids these ideas at a young age, it could completely change how people view math.
                     </Typography>
                 </Paper >
 
-                <Button variant="contained" color="success">Share</Button>
+                <Button  variant="outlined"  sx={{backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}}>Share</Button>
             </Stack>
             </Grid>
             <Grid md={0.5}>
@@ -128,12 +126,12 @@ const [open, setOpen] = React.useState(false);
                         <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:45</span> One important concept in calculus is the <Tooltip title= "Derivative"><Link href="/" underline="none">{"derivative"}</Link></Tooltip>.</ListItemText>
                     </List>
                 </Paper>
-                <Button variant="contained" sx={{mt:3}} color="success">Edit Transcript</Button>
+                <Button href="/transcripteditor" variant="outlined"  sx={{mt:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}}>Edit Transcript</Button>
                 </Stack>
             </Grid>
             </Grid>
             <Paper elevation={3} sx={{mt:2,p:2,mb:2}}>
-      <Typography variant='h5' component="div" sx={{fontWeight:"bold",py:1}}>
+      <Typography variant='h5' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{py:1}}>
         Calculus
       </Typography>
       <hr/>
@@ -164,16 +162,16 @@ const [open, setOpen] = React.useState(false);
         </Tooltip>; differential calculus concerns instantaneous rates of change, and the slopes of curves, while integral calculus concerns accumulation of quantities, and areas under or between curves.      </Typography>
             </Paper>
             <Paper elevation={3} sx={{mt:2,p:2,mb:2}}>
-      <Typography variant='h5' component="div" sx={{fontWeight:"bold",py:1}}>
+      <Typography variant='h5' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{py:1}}>
         Calculus Quiz
       </Typography>
       <hr/>
       <Typography variant='body1' component="div" sx={{pt:2,pb:2}}>
       What is the main focus of calculus?
       </Typography>
-      <Button variant='contained' sx={{mr:2,mb:2,}} onClick={()=>{setCorrectAns(true); setOpen(true);}}>Continuous Change</Button>
-      <Button variant='contained' sx={{mr:2,mb:2}} onClick={()=>{setCorrectAns(false); setOpen(true);}}>Static quantitie</Button>
-      <Button variant='contained' sx={{mr:2,mb:2}} onClick={()=>{setCorrectAns(false); setOpen(true);}}>Discrete numbers</Button>
+      <Button variant='outlined' sx={{mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={()=>{setCorrectAns(true); setOpen(true);}}>Continuous Change</Button>
+      <Button variant='outlined' sx={{mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={()=>{setCorrectAns(false); setOpen(true);}}>Static quantitie</Button>
+      <Button variant='outlined' sx={{mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={()=>{setCorrectAns(false); setOpen(true);}}>Discrete numbers</Button>
       </Paper>
 
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical:"bottom",horizontal:"right"}}>
