@@ -4,7 +4,8 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
 import { Alert, Button, FormControl, IconButton, Link, MenuItem, Paper, Select, SelectChangeEvent, Snackbar, Stack, Typography } from '@mui/material';
-import SwipeableTextMobileStepper from './carousel';
+import CarouselComponent from './carousel';
+// import SwipeableTextMobileStepper from './carousel';
 
 
 export default function Directory() {
@@ -31,6 +32,12 @@ const [open, setOpen] = React.useState(false);
     setLang(event.target.value);
   };
 
+
+  const coursel = () =>{
+    setInterval(function() {
+      alert("This runs every 2 seconds");
+  }, 1000);
+  }
 
   return (
     <>
@@ -102,7 +109,7 @@ const [open, setOpen] = React.useState(false);
   {'Calculus '}
 </Link> 
 
-{calculusvisb&&<Stack >
+{calculusvisb&&<Stack maxWidth={"100%"}>
   {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
       <Stack >
@@ -127,50 +134,29 @@ const [open, setOpen] = React.useState(false);
       </Stack>
       
     </Stack>
-  </Paper> */}
-  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
+  </Paper> */} 
+  {/* <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
   <SwipeableTextMobileStepper/>
-  </Button>
+  </Button> */}
+  <CarouselComponent/>
 </Stack>}
  is the mathematical study of continuous change, in the same way that {!mo2?<IconButton color='primary'size='small' onClick={()=>{setNo2(true)}} >[+]</IconButton>:<IconButton size='small' color='primary' onClick={()=>{
         setNo2(false)
       }} >[-]</IconButton>}
  <Link href="#" underline="none">
   {'geometry'}
-</Link> {mo2&&<Stack>
-  {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
-    <Stack flexDirection={"row"} gap={2} maxWidth={160}>
-      <Stack>
-      <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
-      <Typography textAlign={"center"} >geometry: Video 1</Typography>
-      </Stack>
-      <Stack>
-      <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
-      <Typography textAlign={"center"} >geometry: Video 2</Typography>
-      </Stack>
-      <Stack>
-      <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
-      <Typography textAlign={"center"} >geometry: Video 3</Typography>
-      </Stack>
-      <Stack>
-      <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
-      <Typography textAlign={"center"} >geometry: Video 4</Typography>
-      </Stack>
-      <Stack>
-      <Paper elevation={0} sx={{bgcolor:"grey",width:160,height:90,alignItems:"center",display:"flex",justifyContent:"center"}}>160 X 90</Paper>
-      <Typography textAlign={"center"} >geometry: Video 5</Typography>
-      </Stack>
-    </Stack>
+</Link> {mo2&&<Stack maxWidth={"100%"}>
+  {/* <Paper elevation={3} sx={{display:'flex',flexDirection:'row',p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",}}} >
+    
+
   </Paper> */}
-  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
-  <SwipeableTextMobileStepper/>
-  </Button>
+<CarouselComponent/>
 </Stack>}   is the study of shape and  {!mo3?<IconButton color='primary'size='small' onClick={()=>{setNo3(true)}} >[+]</IconButton>:<IconButton size='small' color='primary' onClick={()=>{
         setNo3(false)
       }} >[-]</IconButton>}
 <Link href="#" underline="none">
   {'algebra'}
-</Link> {mo3&&<Stack>
+</Link> {mo3&&<Stack maxWidth={"100%"}>
   {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
       <Stack>
@@ -195,9 +181,10 @@ const [open, setOpen] = React.useState(false);
       </Stack>
     </Stack>
   </Paper> */}
-  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
+  {/* <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
   <SwipeableTextMobileStepper/>
-  </Button>
+  </Button> */}
+  <CarouselComponent/>
 </Stack>} is the study of generalizations of arithmetic operations.
       </Typography>
       <Typography variant='body1' component="div" sx={{pt:2,}}>
@@ -205,7 +192,7 @@ const [open, setOpen] = React.useState(false);
         setNo4(false)
       }} >[-]</IconButton>} <Link href="#" underline="none">
   {'differential calculus'}
-</Link>{mo4&&<Stack>
+</Link>{mo4&&<Stack maxWidth={"100%"}>
   {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
       <Stack>
@@ -230,15 +217,13 @@ const [open, setOpen] = React.useState(false);
       </Stack>
     </Stack>
   </Paper> */}
-  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
-  <SwipeableTextMobileStepper/>
-  </Button>
+  <CarouselComponent/>
 </Stack>} and  {!mo5?<IconButton color='primary'size='small' onClick={()=>{setNo5(true)}} >[+]</IconButton>:<IconButton size='small' color='primary' onClick={()=>{
         setNo5(false)
       }} >[-]</IconButton>}
       <Link href="#" underline="none">
   {'integral calculus'}
-</Link>{mo5&&<Stack>
+</Link>{mo5&&<Stack maxWidth={"100%"}>
   {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
       <Stack>
@@ -263,15 +248,13 @@ const [open, setOpen] = React.useState(false);
       </Stack>
     </Stack>
   </Paper> */}
-  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
-  <SwipeableTextMobileStepper/>
-  </Button>
+  <CarouselComponent/>
 </Stack>}. The former concerns instantaneous rates of change, and the slopes of curves, while integral calculus concerns accumulation of quantities, and areas under or between curves. These two branches are related to each other by the 
 {!mo6?<IconButton color='primary'size='small' onClick={()=>{setNo6(true)}} >[+]</IconButton>:<IconButton size='small' color='primary' onClick={()=>{
         setNo6(false)
       }} >[-]</IconButton>}<Link href="#" underline="none">
   {'fundamental theorem of calculus.'}
-</Link>{mo6&&<Stack>
+</Link>{mo6&&<Stack maxWidth={"100%"}>
   {/* <Paper elevation={3} sx={{p:3,my:2,overflowY:"hidden",overflowX:{xs:"scroll",md:"hidden"}}} >
     <Stack flexDirection={"row"} gap={2} maxWidth={160}>
       <Stack>
@@ -296,9 +279,7 @@ const [open, setOpen] = React.useState(false);
       </Stack>
     </Stack>
   </Paper> */}
-  <Button href='/player' sx={{"&:hover":{backgroundColor:"transparent"}}}>
-  <SwipeableTextMobileStepper/>
-  </Button>
+  <CarouselComponent/>
 </Stack>}
       </Typography>
       <Paper elevation={3} sx={{mt:2,p:2,mb:2}}>

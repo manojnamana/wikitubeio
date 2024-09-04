@@ -1,6 +1,6 @@
 import { Alert, Box, Button, Grid, IconButton, InputLabel, Paper, Snackbar, Stack, TextField, Typography } from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
-import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState } from "react";
+import { useState } from "react";
 import SaveIcon from '@mui/icons-material/Save';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Dialog from '@mui/material/Dialog';
@@ -85,14 +85,14 @@ const TranscriptEditor = () =>{
                 <Paper variant="outlined" key ={index} sx={{p:3,m:3}} >
                     <Typography fontWeight={"bold"} pb={2}>Segment {i.id}</Typography>
                     <Grid container>
-                        <Grid xs={5} >
+                        <Grid xs={12} sm={5} >
                         <InputLabel id ="startTime">Start Time</InputLabel>
                             <TextField type="time" aria-label="Start Time" size="small" fullWidth placeholder="Start Time"  />
                         </Grid>
-                        <Grid xs={2} >
+                        <Grid sm={2}>
                             
                         </Grid>
-                        <Grid xs={5}  >
+                        <Grid xs ={12}  sm={5} sx={{mt:{xs:2,sm:0}}} >
                             <InputLabel id ="EndTime">End Time</InputLabel>
                             <TextField type="time" aria-label="End Time"  size="small" fullWidth placeholder="End Time"/>
                         </Grid>
