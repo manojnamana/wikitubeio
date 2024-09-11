@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
 import { Alert, Button, FormControl, IconButton, Link, MenuItem, Paper, Select, SelectChangeEvent, Snackbar, Stack, Typography } from '@mui/material';
-import CarouselComponent from './carousel';
+import CarouselComponent from '../src/components/carousel';
 // import SwipeableTextMobileStepper from './carousel';
 
 

@@ -138,7 +138,7 @@ export default function Header() {
         <Toolbar>
           
          
-          <IconButton href='/' sx={{"&:hover":{backgroundColor:"transparent"},alignItems:"end"}}>
+          <IconButton href='/directory' sx={{"&:hover":{backgroundColor:"transparent"},alignItems:"end"}}>
                 <Avatar  src="/static/images/wikitube_logo.jpeg" sx={{width:60}} />
                 <Typography
             fontSize={22}

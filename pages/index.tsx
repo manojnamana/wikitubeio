@@ -1,14 +1,13 @@
+import Login from "@/src/components/login";
 
-import Directory from "@/src/components/directory";
+
 
 
 export default function Home() {
-
-
   
   return (
     <>
-  <Directory/>
+  <Login/>
 
     </>
   )
