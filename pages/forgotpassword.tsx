@@ -2,15 +2,15 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, FormControl, Paper, Typography, Snackbar, Alert, Stack,Link } from '@mui/material';
-
-// import axios from 'axios';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const ForgotPassword = () => {
   const [email, setEmail] = React.useState('');
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
-  // const navigate = useNavigate();
+   const navigate = useRouter();
 
 
   const validateEmail = (email: string) => {
@@ -27,20 +27,20 @@ const ForgotPassword = () => {
       setSnackbarMessage('Please enter a valid email address.');
       setOpenSnackbar(true);
     } else {
-      setOpenSnackbar(true);
+      // setOpenSnackbar(true);
       // setTimeout(() => navigate("/"), 3000); 
      
-    //   try{
-    //     const response =  await axios.post('https://railways-three.vercel.app/api/password-reset-request/', { email });
-    //     if (response.status === 200) {
-    //       setSnackbarMessage('Reset Password Link Sent To Your Email');
-    //       setOpenSnackbar(true);
-    //        setTimeout(() => navigate("/"), 3000); 
-    //   }
-    // }catch(error){
-    //   setSnackbarMessage(error.response?.data?.email );
-    //     setOpenSnackbar(true);
-    //   }
+      try{
+        const response =  await axios.post('https://wikitubeio-backend.vercel.app/api/password-reset/', { email });
+        if (response.status === 200) {
+          setSnackbarMessage('Reset Password Link Sent To Your Email');
+          setOpenSnackbar(true);
+           setTimeout(() => navigate.push("/"), 3000); 
+      }
+    }catch(error:any){
+      setSnackbarMessage(error.response?.data?.email );
+        setOpenSnackbar(true);
+      }
     }
   };
 

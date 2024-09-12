@@ -12,7 +12,7 @@ interface Item {
 const items: Item[] = [
   {
     name: 'Item 1',
-    image: '/static/images/video-placeholder.jpg',
+    image: '/static/images/intro.jpg',
   },
   {
     name: 'Item 2',

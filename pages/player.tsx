@@ -66,8 +66,20 @@ const [open, setOpen] = React.useState(false);
         <Grid container mt={5}>
             <Grid md={7}>
             <Stack >
-                <Stack sx={{bgcolor:"black",width:"100%",aspectRatio:"16/9",alignItems:"center",display:"flex",justifyContent:"center",color:"white",fontSize:"24px"}}>
+                {/* <Stack sx={{bgcolor:"black",width:"100%",aspectRatio:"16/9",alignItems:"center",display:"flex",justifyContent:"center",color:"white",fontSize:"24px"}}>
                 Video Placeholder
+                </Stack> */}
+                <Stack sx={{width:"100%",aspectRatio:"16/9",alignItems:"center",display:"flex",justifyContent:"center"}}>
+                <iframe
+            src={`https://www.youtube.com/embed/Zp3Q57EJO4E?si=PABW_0l9xe-BhI4a`}
+            allow=""
+            allowFullScreen
+            frameBorder={0}
+            title="YouTube video"
+            width={"100%"}
+            height={"100%"}
+            
+          />
                 </Stack>
                 <Typography sx={{textOverflow:"ellipsis",overflow:"hidden",whiteSpace:"nowrap",fontSize:18,fontWeight:"bold",pt:2}}>
                 Calculus at a Fifth Grade Level
@@ -120,10 +132,10 @@ const [open, setOpen] = React.useState(false);
                 </Stack>
                 <Paper elevation={2} sx={{p:2,overflowY:"auto",height:"300px"}}  >
                     <List >
-                        <ListItemText sx={{pb:2}} ><span style={{color:"#606060"}}>0:00</span> Today we're going to learn about <Tooltip title= "Calculus"><Link href="/" underline="none">{"calculus"}</Link></Tooltip>.</ListItemText>
+                        <ListItemText sx={{pb:2}} ><span style={{color:"#606060"}}>0:00</span> Today we're going to learn about <Tooltip title= "Calculus"><Link href="/directory" underline="none">{"calculus"}</Link></Tooltip>.</ListItemText>
                         <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:15</span> Calculus is all about studying how things change.</ListItemText>
-                        <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:20</span> It's like <Tooltip title= "Algebra"><Link href="/" underline="none">{"algebra"}</Link></Tooltip>, but instead of using numbers, we use rates of change.</ListItemText>
-                        <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:45</span> One important concept in calculus is the <Tooltip title= "Derivative"><Link href="/" underline="none">{"derivative"}</Link></Tooltip>.</ListItemText>
+                        <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:20</span> It's like <Tooltip title= "Algebra"><Link href="/directory" underline="none">{"algebra"}</Link></Tooltip>, but instead of using numbers, we use rates of change.</ListItemText>
+                        <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:45</span> One important concept in calculus is the <Tooltip title= "Derivative"><Link href="/directory" underline="none">{"derivative"}</Link></Tooltip>.</ListItemText>
                     </List>
                 </Paper>
                 <Button href="/transcripteditor" variant="outlined"  sx={{mt:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}}>Edit Transcript</Button>
@@ -137,26 +149,26 @@ const [open, setOpen] = React.useState(false);
       <hr/>
       <Typography variant='body1' component="div" sx={{py:2}}>
       <Tooltip  title="Calculus" >
-        <Link  href="/" underline="none"  variant="body1">
+        <Link  href="/directory" underline="none"  variant="body1">
         {"Calculus"}
         </Link>
         </Tooltip> is the mathematical study of continuous change, in the same way that <Tooltip  title="Geometry">
-        <Link  href="/" underline="none"  variant="body1">
+        <Link  href="/directory" underline="none"  variant="body1">
         {"geometry"}
         </Link>
         </Tooltip> is the study of shape, and <Tooltip  title="Algebra">
-        <Link  href="/" underline="none"  variant="body1">
+        <Link  href="/directory" underline="none"  variant="body1">
         {"algebra"}
         </Link>
         </Tooltip> is the study of generalizations of arithmetic operations.
       </Typography>
       <Typography variant='body1' component="div" sx={{pb:2}}>
       It has two major branches, <Tooltip  title="Differential_Calculus">
-        <Link  href="/" underline="none"  variant="body1">
+        <Link  href="/directory" underline="none"  variant="body1">
         {"differential calculus"}
         </Link>
         </Tooltip> and<Tooltip  title="Integral_Calculus">
-        <Link  href="/" underline="none"  variant="body1">
+        <Link  href="/directory" underline="none"  variant="body1">
         {"integral calculus"}
         </Link>
         </Tooltip>; differential calculus concerns instantaneous rates of change, and the slopes of curves, while integral calculus concerns accumulation of quantities, and areas under or between curves.      </Typography>
