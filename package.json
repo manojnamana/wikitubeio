@@ -28,7 +28,8 @@
     "react-router-dom": "^6.26.2",
     "react-swipeable-views-react-18-fix": "^0.14.1",
     "react-swipeable-views-utils-react-18-fix": "^0.14.1",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "youtube-transcript": "^1.2.1"
   },
   "devDependencies": {
     "@types/node": "^22.5.3",
