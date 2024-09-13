@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { YoutubeTranscript, TranscriptResponse } from "youtube-transcript"; // Use the type from the library
+import { YoutubeTranscript, TranscriptResponse } from "youtube-transcript"; 
 
 export default async function handler(
   req: NextApiRequest,

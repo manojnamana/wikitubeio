@@ -44,7 +44,7 @@ const Login = () => {
         if (response.status === 200) {
           setSnackbarMessage('Login successful!');
           setOpenSnackbar(true);
-          setTimeout(() => navigate.push("/directory"), 3000); 
+          setTimeout(() => navigate.push("/landing"), 3000); 
       }
     }catch(error:any){
       setSnackbarMessage(error.response?.data?.error || "No user found with this email address! ");
