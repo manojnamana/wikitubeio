@@ -15,6 +15,7 @@ const Login = () => {
   const [password, setPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [waiting, setwaiting] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -38,15 +39,18 @@ const Login = () => {
       // setSnackbarMessage('Login successful!');
       // setOpenSnackbar(true);
       // setTimeout(() => navigate.push("/directory"), 3000); 
-     
+      setwaiting(true)
       try{
+        setwaiting(true)
         const response =  await axios.post('https://wikitubeio-backend.vercel.app/api/login/', { email, password, });
         if (response.status === 200) {
           setSnackbarMessage('Login successful!');
+          setwaiting(false)
           setOpenSnackbar(true);
           setTimeout(() => navigate.push("/landing"), 3000); 
       }
     }catch(error:any){
+      setwaiting(false)
       setSnackbarMessage(error.response?.data?.error || "No user found with this email address! ");
         setOpenSnackbar(true);
       }
@@ -131,7 +135,7 @@ const Login = () => {
             label="Password"
           />
         </FormControl>
-        <Button variant='contained'  type='submit' sx={{ my: 3 }} >Login</Button>
+       {waiting ?<Button variant='contained'  disabled sx={{ my: 3 }} >Login</Button>: <Button variant='contained'  type='submit' sx={{ my: 3 }} >Login</Button>}
         
 
           <Stack direction={{md:"row",xs:"column"}} display={"flex"} justifyContent={"space-between"} spacing={4}>

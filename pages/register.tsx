@@ -21,6 +21,7 @@ const Register = () => {
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [waiting, setwaiting] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: { preventDefault: () => any; }) => event.preventDefault();
@@ -44,16 +45,19 @@ const Register = () => {
     } else {
       // setSnackbarMessage('Registertion Success!');
       // setOpenSuccessSnackbar(true);
-
+      setwaiting(true)
       try {
+        setwaiting(true)
        const response =  await axios.post('https://wikitubeio-backend.vercel.app/api/register/', {first_name:firstName,last_name:lastName, email, password,phone_number:phonenumber,date_of_birth:dateOfBirth,gender });
         if (response.status === 201 || response.status === 200) {
           // setSnackbarMessage('Verfication Link Sent To Your Mail!');
           setOpenSuccessSnackbar(true);
+          setwaiting(false)
           setSnackbarMessage('Registertion Success!');
           setTimeout(() => navigate.push("/"), 3000); 
         }
       } catch (error:any) {
+        setwaiting(false)
         setSnackbarMessage(error.response?.data?.error );
         setOpenSnackbar(true);
       }
