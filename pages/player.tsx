@@ -132,13 +132,13 @@ const [open, setOpen] = React.useState(false);
                 </FormControl>
                 </Stack>
                 <Paper elevation={2} sx={{p:2,overflowY:"auto",height:"300px"}}  >
-                    {/* <List >
+                    <List >
                         <ListItemText sx={{pb:2}} ><span style={{color:"#606060"}}>0:00</span> Today we're going to learn about <Tooltip title= "Calculus"><Link href="/directory" underline="none">{"calculus"}</Link></Tooltip>.</ListItemText>
                         <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:15</span> Calculus is all about studying how things change.</ListItemText>
                         <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:20</span> It's like <Tooltip title= "Algebra"><Link href="/directory" underline="none">{"algebra"}</Link></Tooltip>, but instead of using numbers, we use rates of change.</ListItemText>
                         <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:45</span> One important concept in calculus is the <Tooltip title= "Derivative"><Link href="/directory" underline="none">{"derivative"}</Link></Tooltip>.</ListItemText>
-                    </List> */}
-                    <TranscriptPage/>
+                    </List>
+                    {/* <TranscriptPage/> */}
                 </Paper>
                 <Button href="/transcripteditor" variant="outlined"  sx={{mt:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}}>Edit Transcript</Button>
                 </Stack>
