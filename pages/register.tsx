@@ -50,10 +50,10 @@ const Register = () => {
         setwaiting(true)
        const response =  await axios.post('https://wikitubeio-backend.vercel.app/api/register/', {first_name:firstName,last_name:lastName, email, password,phone_number:phonenumber,date_of_birth:dateOfBirth,gender });
         if (response.status === 201 || response.status === 200) {
-          // setSnackbarMessage('Verfication Link Sent To Your Mail!');
+          setSnackbarMessage('Verfication Link Sent To Your Mail!');
           setOpenSuccessSnackbar(true);
           setwaiting(false)
-          setSnackbarMessage('Registertion Success!');
+          // setSnackbarMessage('Registertion Success!');
           setTimeout(() => navigate.push("/"), 3000); 
         }
       } catch (error:any) {
@@ -210,7 +210,7 @@ const Register = () => {
           </Grid>
 
         </Grid>
-        <Button variant='contained' type='submit' sx={{ my: 3 }}>Register</Button>
+        {waiting?<Button variant='contained' disabled type='button' sx={{ my: 3 }}>Register</Button>:<Button variant='contained' type='submit' sx={{ my: 3 }}>Register</Button>}
 
         <Typography mr={2}>Already have an account?</Typography>
         <Link href="/" style={{ textDecoration: "none", fontSize: 20 }}>Login</Link>

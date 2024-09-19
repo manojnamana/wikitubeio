@@ -1,14 +1,15 @@
 import * as React from 'react';
-// import {useState,useEffect} from "react"
+import {useState,useEffect} from "react"
 import Box from '@mui/material/Box';
 import { Button, FormControl, IconButton, InputLabel, OutlinedInput, Paper, Typography, Snackbar, Alert, Stack, Backdrop,Link } from '@mui/material';
 import {  useNavigate, } from "react-router-dom";
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-// import axios from 'axios';
+import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
-// import queryString from 'query-string';
+import { useRouter } from 'next/router';
+
 
 const ResetPassword = () => {
 const [confPassword,setConfPassword] = React.useState('');
@@ -18,7 +19,8 @@ const [confPassword,setConfPassword] = React.useState('');
   const [showConfPassword, setShowConfPassword] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
-  // const navigate = useNavigate();
+  const navigate = useRouter();
+  const { uidb64, token } = navigate.query;
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowConfPassword = () => setShowConfPassword((show) => !show);
@@ -43,25 +45,36 @@ const [confPassword,setConfPassword] = React.useState('');
       setOpenSnackbar(true);
     } else {
         setWaiting(true)
-        setSnackbarMessage('Password Reseted successful!');
-          setOpenSnackbar(true);
-      // setTimeout(() => navigate("/"), 3000); 
-      setWaiting(false)
+      //   setSnackbarMessage('Password Reseted successful!');
+      //     setOpenSnackbar(true);
+      // // setTimeout(() => navigate("/"), 3000); 
+      // setWaiting(false)
      
-    //   try{ 
-    //     setWaiting(true)
-    //     const response =  await axios.post(`https://railways-three.vercel.app/api/password-reset-confirm/${uidb64}/${token}/`, { new_password:confPassword });
-    //     if (response.status === 200) {
-    //       setSnackbarMessage('Password Reseted successful!');
-    //       setOpenSnackbar(true);
-    //       setTimeout(() => navigate("/"), 3000); 
-    //       setWaiting(false)
-    //   }
-    // }catch(error){
-    //   setSnackbarMessage(error.response?.data?.error|| "Error resetting password" );
-    //     setOpenSnackbar(true);
-    //     setWaiting(false)
-    //   }
+      try{ 
+        setWaiting(true)
+        const response =  await axios.post(`https://wikitubeio-backend.vercel.app/api/password-reset-confirm/${uidb64}/${token}/`, { 
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          new_password: password,
+        }),
+      });
+
+      console.log(response.status)
+
+        if (response.status === 200) {
+          setSnackbarMessage('Password Reseted successful!');
+          setOpenSnackbar(true);
+          setTimeout(() => navigate.push("/"), 3000); 
+          setWaiting(false)
+      }
+    }catch(error:any){
+      setSnackbarMessage(error.response?.data?.error|| "Error resetting password" );
+        setOpenSnackbar(true);
+        setWaiting(false)
+      }
     }
   };
 
@@ -139,7 +152,7 @@ const [confPassword,setConfPassword] = React.useState('');
             label="ConfirmPassword"
           />
         </FormControl>
-        <Button variant='contained' type='submit' sx={{ my: 3 }}>Submit</Button>
+{  waiting    ? <Button variant='contained' type='submit' disabled sx={{ my: 3 }}>Submit</Button> :  <Button variant='contained' type='submit' sx={{ my: 3 }}>Submit</Button>}
           <Stack direction={{md:"row",xs:"column"}} display={"flex"} justifyContent={"space-between"} spacing={4}>
         <Link href="/register" style={{ textDecoration: "none", fontSize: 20 }}>Create New Account</Link>
         </Stack>
@@ -155,12 +168,12 @@ const [confPassword,setConfPassword] = React.useState('');
         </Alert>
       </Snackbar>
 
-      <Backdrop
+      {/* <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={waiting} 
       >
         <CircularProgress color="inherit" />
-      </Backdrop>
+      </Backdrop> */}
     </Box>
   );
 }

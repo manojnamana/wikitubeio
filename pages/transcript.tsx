@@ -19,8 +19,8 @@ const TranscriptPage: React.FC = () => {
       if (!videoLink) return;
 
       // Extract the video ID from the YouTube URL
-      const videoId = "Zp3Q57EJO4E"
-    //  videoLink.split("v=")[1]?.split("&")[0];
+      const videoId = videoLink.split("v=")[1]?.split("&")[0];
+     
 
       if (!videoId) {
         setError("Invalid YouTube link.");

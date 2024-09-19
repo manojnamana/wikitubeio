@@ -42,7 +42,7 @@ const Login = () => {
       setwaiting(true)
       try{
         setwaiting(true)
-        const response =  await axios.post('https://wikitubeio-backend.vercel.app/api/login/', { email, password, });
+        const response =  await axios.post('https://wikitubeio-backend.vercel.app/api/auth/login', { email, password, });
         if (response.status === 200) {
           setSnackbarMessage('Login successful!');
           setwaiting(false)
