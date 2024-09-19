@@ -53,13 +53,8 @@ const [confPassword,setConfPassword] = React.useState('');
       try{ 
         setWaiting(true)
         const response =  await axios.post(`https://wikitubeio-backend.vercel.app/api/password-reset-confirm/${uidb64}/${token}/`, { 
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+
           new_password: password,
-        }),
       });
 
       console.log(response.status)
