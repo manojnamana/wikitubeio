@@ -84,7 +84,7 @@ const Login = () => {
         elevation={3}
         sx={{
           display: "flex", justifyContent: 'center', flexDirection: "column", alignItems: "center",
-          mt: { md: "10%", xs: "0" },mb: { md: "10%", xs: "25%" },  p: 3, mx: "20%", width: "450"
+          mt: { md: "10%", xs: "0" },mb: { md: "10%", xs: "25%" },  p: 3, mx: {xs:"5%",md:'20%'}, width: "450"
         }}
         component="form"
         noValidate
