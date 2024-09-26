@@ -1,22 +1,68 @@
-import { Button, Fab, Paper, Stack, Typography } from "@mui/material";
+import { Button, colors, Paper, Stack, Typography } from "@mui/material";
 import * as React from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 
-import AddIcon from '@mui/icons-material/Add';
-import { ArrowRightAlt, East, KeyboardBackspace, PlayArrow, PlayCircle, West } from "@mui/icons-material";
+import { East, PlayCircle, West } from "@mui/icons-material";
+import axios from "axios";
+import { ArticleTypes } from "@/types/articleTypes";
+
+import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
+
+import Box from '@mui/material/Box';
+import Loading from "@/src/components/loading";
+
+function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+    return (
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ width: '200%', mr: 1 }}>
+          <LinearProgress color="warning"  variant="determinate" {...props} />
+        </Box>
+        <Box sx={{ minWidth: 35 }}>
+          <Typography
+            variant="body2"
+            sx={{ color: 'text.secondary' }}
+          >{`${Math.round(props.value)}%`}</Typography>
+        </Box>
+      </Box>
+    );
+  }
 
 const Creater = () => {
     const [value, setValue] = React.useState('Computation');
+    const [courseLis, setCourseLis] = React.useState<ArticleTypes[] | null>(null); 
+    const [waiting ,setWaiting] = React.useState(true)
+
+
+    React.useEffect(() => {
+        const fetching = async () => {
+            try {
+                const response = await axios.get('https://wikitubeio-backend.vercel.app/api/courses/');
+                let data = response.data;
+                data = data.sort((a: { course_id: number }, b: { course_id: number }) => a.course_id - b.course_id);
+
+                setCourseLis(data);
+            } catch (error) {
+                console.log(error);
+            }finally{
+                setWaiting(false)
+            }
+        };
+        fetching();
+    }, []);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue((event.target as HTMLInputElement).value);
+        setValue(event.target.value);
     };
+
+    if(waiting) return <Loading/>
+    if (!courseLis) return null;
+
     return (
-        <Stack sx={{ display: "flex", flexDirection: 'column', alignItems: 'center', }}>
-            <Paper elevation={3} sx={{ my: 3, width: { md: "70%" }, p: 3, }} >
+        <Stack sx={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
+            <Paper elevation={3} sx={{ my: 3, width: { md: "70%" }, p: 3 }}>
                 <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} alignItems={"center"} justifyContent={"space-between"}>
                     <Typography fontSize={25} fontWeight={"bold"} py={2}>C.R.E.A.T.E.R.</Typography>
 
@@ -26,7 +72,8 @@ const Creater = () => {
                         <Button variant="contained" style={{ borderRadius: 50 }} color="primary">𝕏</Button>
                     </Stack>
                 </Stack>
-                <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} justifyContent={"space-between"} >
+
+                <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} justifyContent={"space-between"}>
                     <Stack>
                         <FormControl>
                             <RadioGroup
@@ -35,21 +82,23 @@ const Creater = () => {
                                 value={value}
                                 onChange={handleChange}
                             >
-                                <FormControlLabel value="Computation" control={<Radio />} label="Computation" />
-                                <Stack><Paper sx={{ bgcolor: "blueviolet", width: { xs: "100%", md: "200%" }, color: "white", borderRadius: 50, textAlign: "center" }}>100%</Paper></Stack>
-                                <FormControlLabel value="Robotics" control={<Radio />} label="Robotics" />
-                                <Stack><Paper sx={{ bgcolor: "blueviolet", width: { xs: "60%", md: "120%" }, color: "white", borderRadius: 50, textAlign: "center" }}>60%</Paper></Stack>
-                                <FormControlLabel value="Engineering" control={<Radio />} label="Engineering" />
-                                <Stack><Paper sx={{ bgcolor: "blueviolet", width: { xs: "75%", md: "150%" }, color: "white", borderRadius: 50, textAlign: "center" }}>75%</Paper></Stack>
-                                <FormControlLabel value="Arts" control={<Radio />} label="Arts" />
-                                <Stack><Paper sx={{ bgcolor: "blueviolet", width: { xs: "90%", md: "180%" }, color: "white", borderRadius: 50, textAlign: "center" }}>90%</Paper></Stack>
-                                <FormControlLabel value="Technology" control={<Radio />} label="Technology" />
-                                <Stack><Paper sx={{ bgcolor: "blueviolet", width: { xs: "55%", md: "110%" }, color: "white", borderRadius: 50, textAlign: "center" }}>55%</Paper></Stack>
-                                <FormControlLabel value="Energy" control={<Radio />} label="Energy" />
-                                <Stack><Paper sx={{ bgcolor: "blueviolet", width: { xs: "65%", md: "130%" }, color: "white", borderRadius: 50, textAlign: "center" }}>65%</Paper></Stack>
-                                <FormControlLabel value="Random" control={<Radio />} label="Random" />
-                                <Stack><Paper sx={{ bgcolor: "blueviolet", width: { xs: "95%", md: "190%" }, color: "white", borderRadius: 50, textAlign: "center" }}>95%</Paper></Stack>
+                                {courseLis.map((course, index) => (
+                                    <React.Fragment key={index}>
+                                        <FormControlLabel
+                                            value={course.course_name as unknown as string} // Ensuring it's a string
+                                            control={<Radio />}
+                                            label={course.course_name as unknown as string} // Ensure label is a string
+                                        />
 
+                                        <Box sx={{ width: { xs: "100%", md: "200%" } }}>
+                                            <LinearProgressWithLabel  sx={{ borderRadius: 50,p:1}} value={1} />
+                                            </Box>
+                                        {/* <Stack flexDirection={"row"}>
+                                            <Paper sx={{ bgcolor: "blueviolet", width: { xs: "100%", md: "200%" }, color: "white", borderRadius: 50, textAlign: "center" }}></Paper>
+                                            100%
+                                        </Stack> */}
+                                    </React.Fragment>
+                                ))}
                             </RadioGroup>
                         </FormControl>
                     </Stack>
@@ -92,7 +141,6 @@ const Creater = () => {
                 </Stack>
 
                 <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} gap={3} justifyContent={"space-between"}>
-
                     <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} gap={{ md: 5 }} justifyContent={"space-between"}>
                         <Button variant="text" sx={{ color: "black" }}>+ Add to Database</Button>
                         <Button variant="contained" color="success"><West sx={{ mr: 1 }} />Select</Button>
@@ -101,13 +149,11 @@ const Creater = () => {
                     <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} gap={{ md: 5 }} justifyContent={"space-between"}>
                         <Button variant="contained" color="error"><East sx={{ mr: 1 }} />Delete</Button>
                         <Button variant="text" sx={{ color: "black" }}> 🗑️ Remove from Results</Button>
-
                     </Stack>
-
                 </Stack>
             </Paper>
         </Stack>
-    )
-}
+    );
+};
 
 export default Creater;

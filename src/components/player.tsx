@@ -9,6 +9,9 @@ import Select from "@mui/material/Select";
 import InputBase from "@mui/material/InputBase";
 import { VerticalAlignBottom } from "@mui/icons-material";
 import TranscriptPage from "./transcript";
+import axios from "axios";
+import { ArticleTypes } from "@/types/articleTypes";
+
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   "label + &": {
@@ -51,8 +54,35 @@ const [lan, setLan] = React.useState("10");
 const [tanlang, setTanLang] = React.useState("10");
 const [correctAns,setCorrectAns] = React.useState(false);
 const [open, setOpen] = React.useState(false);
+const [articleData, setArticleData] = React.useState<ArticleTypes | null>(null);
+const [waiting, setWaiting] = React.useState(true);
+
+React.useEffect(()=>{
+  const fetchArticle = async () => {
+
+    try {
+      const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/calculus/`);
+      console.log(response.data)
+      if (response.status === 200) {
+        setArticleData(response.data);
+        setWaiting(false);
+      } else {
+        console.error(`Error: ${response.status} - ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error fetching article:", error);
+    } finally {
+      setWaiting(false);
+    }
+  };
+
+  fetchArticle();
+},[])
+
+if(!articleData) return null
 
 
+const quizz = articleData.quizzes
 
   const handleClose = () => {
     setOpen(false);
@@ -61,6 +91,48 @@ const [open, setOpen] = React.useState(false);
   const handleChange = (event: { target: { value: string } }) => {
     setLan(event.target.value);
   };
+
+
+
+  const linkWords: Record<string, string> = articleData.hyperlinks.reduce((acc: Record<string, string>, link) => {
+    acc[link.hyper_link_word] = link.hyper_link_word_url;
+    return acc;
+  }, {} as Record<string, string>);
+
+  // Function to create button and link for a word
+  const createLinkWithButton = (word: string, url: string) => (
+    <span  key={word + Math.random()}>
+      <Tooltip title={word}>
+      <Link href={url} underline="none">
+   {word}
+ </Link>
+ </Tooltip>
+
+ 
+    </span>
+    
+  );
+
+
+
+
+  // Function to render description with links
+  const renderDescription = (text: string) => {
+    const words = text.split(' ');
+
+    return words.map((word, index) => {
+      const cleanWord = word.replace(/[\.\,]/g, ''); // Remove punctuation for accurate matching
+      if (linkWords[cleanWord]) {
+        return (
+          <React.Fragment key={index}>
+            {createLinkWithButton(cleanWord, linkWords[cleanWord])}{' '}
+          </React.Fragment>
+        );
+      }
+      return word + ' ';
+    });
+  };
+  const splittingDescription = articleData.description.split('\r\n');
     return(
         <Stack px={"10%"}>
 
@@ -72,7 +144,7 @@ const [open, setOpen] = React.useState(false);
                 </Stack> */}
                 <Stack sx={{width:"100%",aspectRatio:"16/9",alignItems:"center",display:"flex",justifyContent:"center"}}>
                 <iframe
-            src={`https://www.youtube.com/embed/Zp3Q57EJO4E?si=PABW_0l9xe-BhI4a`}
+            src={`${articleData.article_video_url}`}
             allow=""
             allowFullScreen
             frameBorder={0}
@@ -146,10 +218,15 @@ const [open, setOpen] = React.useState(false);
             </Grid>
             <Paper elevation={3} sx={{mt:2,p:2,mb:2}}>
       <Typography variant='h5' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{py:1}}>
-        Calculus
+        {articleData.article_name}
       </Typography>
       <hr/>
-      <Typography variant='body1' component="div" sx={{py:2}}>
+      {splittingDescription.map((item: string, index: number) => (
+              <Typography key={index} variant='body1' component="div" sx={{ pt: 2, }}>
+                {renderDescription(item)}
+              </Typography>
+            ))}
+      {/* <Typography variant='body1' component="div" sx={{py:2}}>
       <Tooltip  title="Calculus" >
         <Link  href="/directory" underline="none"  variant="body1">
         {"Calculus"}
@@ -173,38 +250,43 @@ const [open, setOpen] = React.useState(false);
         <Link  href="/directory" underline="none"  variant="body1">
         {"integral calculus"}
         </Link>
-        </Tooltip>; differential calculus concerns instantaneous rates of change, and the slopes of curves, while integral calculus concerns accumulation of quantities, and areas under or between curves.      </Typography>
+        </Tooltip>; differential calculus concerns instantaneous rates of change, and the slopes of curves, while integral calculus concerns accumulation of quantities, and areas under or between curves.      </Typography> */}
             </Paper>
-            <Paper elevation={3} sx={{mt:2,p:2,mb:2}}>
-      <Typography variant='h5' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{py:1}}>
-        Calculus Quiz
-      </Typography>
-      <hr/>
-      <Typography variant='body1' component="div" sx={{pt:2,pb:2}}>
-      What is the main focus of calculus?
-      </Typography>
-      <Button variant='outlined' sx={{mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={()=>{setCorrectAns(true); setOpen(true);}}>Continuous Change</Button>
-      <Button variant='outlined' sx={{mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={()=>{setCorrectAns(false); setOpen(true);}}>Static quantitie</Button>
-      <Button variant='outlined' sx={{mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}} onClick={()=>{setCorrectAns(false); setOpen(true);}}>Discrete numbers</Button>
-      </Paper>
+            <Paper elevation={3} sx={{ mt: 2, p: 2, mb: 2 }}>
+              <Typography variant='h5' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{ py: 1 }}>
+                Calculus Quiz
+              </Typography>
+              <hr />
+              {quizz.map(quiz => (
+                <React.Fragment key={quiz.id}>
+                  <Typography variant='body1' component="div" sx={{ pt: 2, pb: 2 }}>
+                    {quiz.question}
+                  </Typography>
+                  {quiz.opt_values.split(';').map((option, idx) => (
+                    <Button
+                      key={idx}
+                      variant='outlined'
+                      sx={ {mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"} }}
+                      onClick={() => { setCorrectAns(quiz.correct_options === ["A", "B", "C"][idx]); setOpen(true); }}
+                    >
+                      {option}
+                    </Button>
+                  ))}
+                </React.Fragment>
+              ))}
+            </Paper>
 
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical:"bottom",horizontal:"right"}}>
-  {correctAns ?<Alert
-    onClose={handleClose}
-    severity="success"
-    variant="filled"
-    sx={{ width: '100%' }}
-  >
-   Correct Answer
-  </Alert>:<Alert
-    onClose={handleClose}
-    severity="error"
-    variant="filled"
-    sx={{ width: '100%' }}
-  >
-    Wrong Answer!
-  </Alert>}
-</Snackbar>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+              {correctAns ? (
+                <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: '100%' }}>
+                  Correct Answer
+                </Alert>
+              ) : (
+                <Alert onClose={handleClose} severity="error" variant="filled" sx={{ width: '100%' }}>
+                  Wrong Answer!
+                </Alert>
+              )}
+            </Snackbar>
         </Stack>
     )
 }

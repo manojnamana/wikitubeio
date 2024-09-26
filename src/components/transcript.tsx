@@ -30,7 +30,7 @@ const TranscriptPage: React.FC = () => {
       setError(null);
 
       try {
-        const res = await fetch(`api/getTranscript?videoId=${videoId}`);
+        const res = await fetch(`http://localhost:3000/api/hello?videoId=${videoId}`);
         const data = await res.json();
 
         if (data.transcript) {
