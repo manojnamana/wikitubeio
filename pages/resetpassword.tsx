@@ -103,7 +103,7 @@ const [confPassword,setConfPassword] = React.useState('');
           Reset Password
         </Typography>
         <FormControl sx={{ m: 1, width: '80%' }} required variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          {/* <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel> */}
           <OutlinedInput
             placeholder='Password'
             id="outlined-adornment-password"
@@ -122,11 +122,11 @@ const [confPassword,setConfPassword] = React.useState('');
                 </IconButton>
               </InputAdornment>
             }
-            label="Password"
+            // label="Password"
           />
         </FormControl>
         <FormControl sx={{ m: 1, width: '80%' }} required variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-ConfirmPassword">Confirm Password</InputLabel>
+          {/* <InputLabel htmlFor="outlined-adornment-ConfirmPassword">Confirm Password</InputLabel> */}
           <OutlinedInput
             placeholder='Confirm Password'
             id="outlined-adornment-password"
@@ -145,7 +145,7 @@ const [confPassword,setConfPassword] = React.useState('');
                 </IconButton>
               </InputAdornment>
             }
-            label="ConfirmPassword"
+            // label="ConfirmPassword"
           />
         </FormControl>
 {  waiting    ? <Button variant='contained' type='submit' disabled sx={{ my: 3 }}>Submit</Button> :  <Button variant='contained' type='submit' sx={{ my: 3 }}>Submit</Button>}

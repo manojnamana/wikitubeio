@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { YoutubeTranscript, TranscriptResponse } from "youtube-transcript"; 
+import { YoutubeTranscript, TranscriptResponse } from "youtube-transcript";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,10 +12,11 @@ export default async function handler(
   }
 
   try {
+    console.log(`Fetching transcript for video ID: ${videoId}`);
     const transcript: TranscriptResponse[] = await YoutubeTranscript.fetchTranscript(videoId);
     res.status(200).json({ transcript });
-    // console.log(transcript)
-  } catch (error) {
+  } catch (error:any) {
+    console.error(`Error fetching transcript: ${error.message}`);
     res.status(500).json({ error: "Error fetching transcript" });
   }
 }

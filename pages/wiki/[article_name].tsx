@@ -11,12 +11,15 @@ const Article = () => {
   const router = useRouter();
   const { article_name } = router.query;
 
+
+
+
   useEffect(() => {
     const fetchArticle = async () => {
-
+      if(!article_name) return null
       try {
-        const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/calculus/`);
-        console.log(response.data)
+        const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/${article_name}/`);
+        // console.log(response.data)
         if (response.status === 200) {
           setArticleData(response.data)
           setWaiting(false);
@@ -28,7 +31,8 @@ const Article = () => {
       } finally {
         setWaiting(false);
       }
-    };
+    
+  }
 
     fetchArticle();
   }, [article_name]);

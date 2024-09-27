@@ -11,6 +11,8 @@ import { VerticalAlignBottom } from "@mui/icons-material";
 import TranscriptPage from "./transcript";
 import axios from "axios";
 import { ArticleTypes } from "@/types/articleTypes";
+import Loading from "./loading";
+import { useRouter } from "next/router";
 
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
@@ -56,16 +58,16 @@ const [correctAns,setCorrectAns] = React.useState(false);
 const [open, setOpen] = React.useState(false);
 const [articleData, setArticleData] = React.useState<ArticleTypes | null>(null);
 const [waiting, setWaiting] = React.useState(true);
-
+const {article_name} = useRouter().query
+const article = (useRouter().query.name)?.toString()
 React.useEffect(()=>{
   const fetchArticle = async () => {
-
+  
     try {
-      const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/calculus/`);
-      console.log(response.data)
+      const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/${article?.toLowerCase()}/`);
+      // console.log(response.data)
       if (response.status === 200) {
         setArticleData(response.data);
-        setWaiting(false);
       } else {
         console.error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -77,7 +79,7 @@ React.useEffect(()=>{
   };
 
   fetchArticle();
-},[])
+},[article])
 
 if(!articleData) return null
 
@@ -100,21 +102,16 @@ const quizz = articleData.quizzes
   }, {} as Record<string, string>);
 
   // Function to create button and link for a word
-  const createLinkWithButton = (word: string, url: string) => (
+  const createLinkWithButton = (word: string,url:string) => (
     <span  key={word + Math.random()}>
       <Tooltip title={word}>
-      <Link href={url} underline="none">
+      <Link href={`/wiki/${word.toLowerCase()}`} underline="none">
    {word}
  </Link>
  </Tooltip>
-
- 
     </span>
     
   );
-
-
-
 
   // Function to render description with links
   const renderDescription = (text: string) => {
@@ -133,15 +130,15 @@ const quizz = articleData.quizzes
     });
   };
   const splittingDescription = articleData.description.split('\r\n');
+
+
     return(
-        <Stack px={"10%"}>
+      <>
+        {waiting ?(<Loading/>):(<Stack px={"10%"}>
 
         <Grid container mt={5}>
             <Grid md={7}>
             <Stack >
-                {/* <Stack sx={{bgcolor:"black",width:"100%",aspectRatio:"16/9",alignItems:"center",display:"flex",justifyContent:"center",color:"white",fontSize:"24px"}}>
-                Video Placeholder
-                </Stack> */}
                 <Stack sx={{width:"100%",aspectRatio:"16/9",alignItems:"center",display:"flex",justifyContent:"center"}}>
                 <iframe
             src={`${articleData.article_video_url}`}
@@ -154,26 +151,24 @@ const quizz = articleData.quizzes
             
           />
                 </Stack>
-                <Typography sx={{textOverflow:"ellipsis",overflow:"hidden",whiteSpace:"nowrap",fontSize:18,fontWeight:"bold",pt:2}}>
-                Calculus at a Fifth Grade Level
+
+                {articleData.videos.map((vid)=>(
+                   <React.Fragment key={vid.video_played_id}>
+                    <Typography sx={{textOverflow:"ellipsis",overflow:"hidden",whiteSpace:"nowrap",fontSize:18,fontWeight:"bold",pt:2}}>
+                {vid.video_title}
                 </Typography>
-
-               <Stack display={"flex"} direction={"row"} alignItems={"center"} gap={1} mt={1}>
-                <Avatar
-        src="/broken-image.jpg"
-      >
-      </Avatar>
-
-      <Typography fontSize={15} fontWeight={700}> 3Blue 1Brown</Typography>
-                
-                
+                <Stack display={"flex"} direction={"row"} alignItems={"center"} gap={1} mt={1}>
+                <Avatar>
+                </Avatar>
+                <Typography fontSize={15} fontWeight={700}> {vid.channel_name}</Typography>
                 </Stack> 
                 <Paper sx={{my:2,}} >
                     <Typography p={2}>
-                    Many people view calculus as the pinnacle of high school math. But actually, it's an introduction to some very simple and elegant ideas that use the math we already know. If we teach kids these ideas at a young age, it could completely change how people view math.
+                      {vid.video_description}
                     </Typography>
                 </Paper >
-
+                   </React.Fragment>
+                ))}
                 <Button  variant="outlined"  sx={{backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}}>Share</Button>
             </Stack>
             </Grid>
@@ -204,13 +199,13 @@ const quizz = articleData.quizzes
                 </FormControl>
                 </Stack>
                 <Paper elevation={2} sx={{p:2,overflowY:"auto",height:"300px"}}  >
-                    {/* <List >
+                    <List >
                         <ListItemText sx={{pb:2}} ><span style={{color:"#606060"}}>0:00</span> Today we're going to learn about <Tooltip title= "Calculus"><Link href="/directory" underline="none">{"calculus"}</Link></Tooltip>.</ListItemText>
                         <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:15</span> Calculus is all about studying how things change.</ListItemText>
                         <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:20</span> It's like <Tooltip title= "Algebra"><Link href="/directory" underline="none">{"algebra"}</Link></Tooltip>, but instead of using numbers, we use rates of change.</ListItemText>
                         <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:45</span> One important concept in calculus is the <Tooltip title= "Derivative"><Link href="/directory" underline="none">{"derivative"}</Link></Tooltip>.</ListItemText>
-                    </List> */}
-                    <TranscriptPage/>
+                    </List>
+                    {/* <TranscriptPage/> */}
                 </Paper>
                 <Button href="/transcripteditor" variant="outlined"  sx={{mt:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}}>Edit Transcript</Button>
                 </Stack>
@@ -226,35 +221,11 @@ const quizz = articleData.quizzes
                 {renderDescription(item)}
               </Typography>
             ))}
-      {/* <Typography variant='body1' component="div" sx={{py:2}}>
-      <Tooltip  title="Calculus" >
-        <Link  href="/directory" underline="none"  variant="body1">
-        {"Calculus"}
-        </Link>
-        </Tooltip> is the mathematical study of continuous change, in the same way that <Tooltip  title="Geometry">
-        <Link  href="/directory" underline="none"  variant="body1">
-        {"geometry"}
-        </Link>
-        </Tooltip> is the study of shape, and <Tooltip  title="Algebra">
-        <Link  href="/directory" underline="none"  variant="body1">
-        {"algebra"}
-        </Link>
-        </Tooltip> is the study of generalizations of arithmetic operations.
-      </Typography>
-      <Typography variant='body1' component="div" sx={{pb:2}}>
-      It has two major branches, <Tooltip  title="Differential_Calculus">
-        <Link  href="/directory" underline="none"  variant="body1">
-        {"differential calculus"}
-        </Link>
-        </Tooltip> and<Tooltip  title="Integral_Calculus">
-        <Link  href="/directory" underline="none"  variant="body1">
-        {"integral calculus"}
-        </Link>
-        </Tooltip>; differential calculus concerns instantaneous rates of change, and the slopes of curves, while integral calculus concerns accumulation of quantities, and areas under or between curves.      </Typography> */}
+
             </Paper>
             <Paper elevation={3} sx={{ mt: 2, p: 2, mb: 2 }}>
               <Typography variant='h5' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{ py: 1 }}>
-                Calculus Quiz
+                {articleData.article_name} Quiz
               </Typography>
               <hr />
               {quizz.map(quiz => (
@@ -287,7 +258,8 @@ const quizz = articleData.quizzes
                 </Alert>
               )}
             </Snackbar>
-        </Stack>
+        </Stack>)}
+        </>
     )
 }
 

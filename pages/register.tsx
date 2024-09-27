@@ -105,7 +105,7 @@ const Register = () => {
             <FormControl sx={{ ml: 2, width: {md:'90%',xs:"95%"} }} variant="outlined">
               <TextField
                 id="FirstName"
-                label="First Name"
+                // label="First Name"
                 required
                 placeholder='First Name'
                 value={firstName}
@@ -118,7 +118,7 @@ const Register = () => {
             <FormControl sx={{ ml: 2, width: {md:'90%',xs:"95%"}}} variant="outlined">
               <TextField
                 id="LastName"
-                label="Last Name"
+                // label="Last Name"
                 required
                 placeholder='Last Name'
                 value={lastName}
@@ -141,6 +141,7 @@ const Register = () => {
                   id="gender"
                   required
                   value={gender}
+                  placeholder='Gender'
                   label="Gender"
                   sx={{mb:3}}
                   onChange={(e)=>setGender(e.target.value)}
@@ -157,7 +158,7 @@ const Register = () => {
             <FormControl sx={{ ml: 2, width: '95%' }} variant="outlined">
               <TextField
                 id="email"
-                label="Email"
+                // label="Email"
                 type='email'
                 required
                 placeholder='Email'
@@ -171,7 +172,7 @@ const Register = () => {
           </Grid>
           <Grid xs={12}>
             <FormControl sx={{ ml: 2, width: '95%' ,mb:3}} required variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+              {/* <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel> */}
               <OutlinedInput
                 id="outlined-adornment-password"
                 placeholder='Password'
@@ -190,7 +191,7 @@ const Register = () => {
                     </IconButton>
                   </InputAdornment>
                 }
-                label="Password"
+                // label="Password"
               />
             </FormControl>
           </Grid>
@@ -198,7 +199,7 @@ const Register = () => {
             <FormControl sx={{ ml: 2, width: '95%' }} variant="outlined">
               <TextField
                 id="phonenumber"
-                label="Phonenumber"
+                // label="Phonenumber"
                 required
                 placeholder='Phonenumber'
                 type='number'

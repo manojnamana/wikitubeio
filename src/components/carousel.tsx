@@ -5,24 +5,29 @@ import { Paper, Button, Stack } from '@mui/material';
 import Link from 'next/link';
 import axios from 'axios';
 import Loading from './loading';
+import { useRouter } from 'next/router';
 
 interface Item {
-  name: string;
+  id: number;
+  name:string;
   image: string;
 }
 
 const CarouselComponent: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [waiting, setWaiting] = useState(true);
+  const {article_name} = useRouter().query
 
   useEffect(() => {
     const fetching = async () => {
       try {
-        const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/calculus/`);
+        const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/${article_name}/`);
         if (response.status === 200) {
+          
           const fetchedItems: Item[] = [
             {
-              name: response.data.article_name,
+              id: response.data.videos[0].video_played_id,
+              name:response.data.article_name,
               image: response.data.article_video_thumbnail,
             },
             // {
@@ -54,7 +59,7 @@ const CarouselComponent: React.FC = () => {
     };
 
     fetching();
-  }, []);
+  }, [article_name]);
 
   if (waiting) return <Loading />;
 
@@ -73,12 +78,13 @@ interface CarouselItemProps {
 
 const CarouselItem: React.FC<CarouselItemProps> = ({ item }) => {
   return (
-    <Link href={`/tube/${item.name}`} passHref>
+    <Link href={`/tube/${item.id}?name=${encodeURIComponent(item.name)}`} passHref>
       <Stack>
         <img src={item.image} alt={item.name} style={{ maxHeight: 400 }} />
       </Stack>
     </Link>
   );
 };
+
 
 export default CarouselComponent;

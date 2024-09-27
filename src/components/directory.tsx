@@ -30,7 +30,7 @@ const Directory = ({
   const [lang, setLang] = React.useState<string>("10");
   const [open, setOpen] = React.useState<boolean>(false);
   const [correctAns, setCorrectAns] = React.useState<boolean>(false);
-  const [calculusvisb,setCalculusvisb] = React.useState(false)
+  const [calculusVisible, setCalculusVisible] = React.useState<boolean>(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -48,37 +48,66 @@ const Directory = ({
 
   // Function to create button and link for a word
   const createLinkWithButton = (word: string, url: string) => (
-    <span  key={word + Math.random()}>
-      {!calculusvisb?<IconButton color='primary'size='small' onClick={()=>{setCalculusvisb(true)}} >[+]</IconButton>:<IconButton size='small' color='primary' onClick={()=>{        setCalculusvisb(false)
-      }} >[-]</IconButton>}
-      <Link href={url} underline="none">
-   {word}
- </Link>
+    <span key={word + Math.random()}>
+      <IconButton
+        color='primary'
+        size='small'
+        onClick={() => setCalculusVisible(prev => !prev)}
+      >
+        {calculusVisible ? '[-]' : '[+]'}
+      </IconButton>
+      <Link href={`${word.toLowerCase()}`} underline="none">
+        {word}
+      </Link>
 
- {calculusvisb&&<Stack maxWidth={"100%"}><CarouselComponent/>
- </Stack>} 
+      {calculusVisible && (
+        <Stack maxWidth={"100%"}>
+          <CarouselComponent />
+        </Stack>
+      )}
     </span>
-    
   );
 
-
-
-
-  // Function to render description with links
+  // Function to render description with links, handling phrases or multiple hyperlinks
   const renderDescription = (text: string) => {
     const words = text.split(' ');
-
-    return words.map((word, index) => {
-      const cleanWord = word.replace(/[\.\,]/g, ''); // Remove punctuation for accurate matching
-      if (linkWords[cleanWord]) {
-        return (
-          <React.Fragment key={index}>
-            {createLinkWithButton(cleanWord, linkWords[cleanWord])}{' '}
+    const elements: JSX.Element[] = [];
+  
+    for (let i = 0; i < words.length; i++) {
+      let word = words[i];
+      let cleanedWord = word.replace(/[\.,]/g, ''); // Clean punctuation for accurate matching
+  
+      // Check for phrases or single word matches
+      let matchedPhrase = '';
+      let matchedUrl = '';
+  
+      for (let j = i; j < words.length; j++) {
+        const phrase = words.slice(i, j + 1).join(' ').replace(/[\.,]/g, '');
+        if (linkWords[phrase]) {
+          matchedPhrase = phrase;
+          matchedUrl = linkWords[phrase];
+        }
+      }
+  
+      if (matchedPhrase) {
+        elements.push(
+          <React.Fragment key={i}>
+            {createLinkWithButton(matchedPhrase, matchedUrl)}{' '}
           </React.Fragment>
         );
+        i += matchedPhrase.split(' ').length - 1; // Skip the words that were part of the phrase
+      } else if (linkWords[cleanedWord]) {
+        elements.push(
+          <React.Fragment key={i}>
+            {createLinkWithButton(cleanedWord, linkWords[cleanedWord])}{' '}
+          </React.Fragment>
+        );
+      } else {
+        elements.push(<span key={i}>{word} </span>);
       }
-      return word + ' ';
-    });
+    }
+  
+    return elements;
   };
 
   const splittingDescription = description.split('\r\n');
@@ -122,38 +151,25 @@ const Directory = ({
             </Typography>
             <hr />
             <Paper elevation={3} sx={{ mt: 3, p: 2 }}>
-              <Typography variant='h6' component="div" sx={{ fontWeight: "bold", }}>
+              <Typography variant='h6' component="div" sx={{ fontWeight: "bold" }}>
                 Contents
               </Typography>
               {content.map((item, index) => (
-                <Typography key={item.content_id} variant='body1' component="div" sx={{ pl: 2, }}>
+                <Typography key={item.content_id} variant='body1' component="div" sx={{ pl: 2 }}>
                   {index + 1}. {item.content_name}
                 </Typography>
               ))}
             </Paper>
 
             {splittingDescription.map((item: string, index: number) => (
-              <Typography key={index} variant='body1' component="div" sx={{ pt: 2, }}>
+              <Typography key={index} variant='body1' component="div" sx={{ pt: 2 }}>
                 {renderDescription(item)}
               </Typography>
             ))}
 
-            {/* <Paper elevation={3} sx={{ mt: 2, p: 2, mb: 2 }}>
-              <Typography variant='h5' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{ py: 1 }}>
-                Related Links
-              </Typography>
-              {hyperlinks.map(link => (
-                <Typography key={link.hyper_link_word} variant='body1' component="div" sx={{ pl: 2, }}>
-                  <Link href={link.hyper_link_word_url} underline="none">
-                    {link.hyper_link_word}
-                  </Link>
-                </Typography>
-              ))}
-            </Paper> */}
-
             <Paper elevation={3} sx={{ mt: 2, p: 2, mb: 2 }}>
               <Typography variant='h5' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{ py: 1 }}>
-                Calculus Quiz
+                {article_name} Quiz
               </Typography>
               <hr />
               {quizzes.map(quiz => (
@@ -165,8 +181,22 @@ const Directory = ({
                     <Button
                       key={idx}
                       variant='outlined'
-                      sx={ {mr:2,mb:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"} }}
-                      onClick={() => { setCorrectAns(quiz.correct_options === ["A", "B", "C"][idx]); setOpen(true); }}
+                      sx={{
+                        mr: 2,
+                        mb: 2,
+                        backgroundColor: "#eaecf0ff",
+                        color: "#202122",
+                        borderRadius: 0,
+                        borderColor: '#a2a9b1',
+                        "&:hover": {
+                          borderColor: '#a2a9b1',
+                          backgroundColor: "#eaecf0ff"
+                        }
+                      }}
+                      onClick={() => {
+                        setCorrectAns(quiz.correct_options === ["A", "B", "C"][idx]);
+                        setOpen(true);
+                      }}
                     >
                       {option}
                     </Button>
@@ -175,7 +205,12 @@ const Directory = ({
               ))}
             </Paper>
 
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+            <Snackbar
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            >
               {correctAns ? (
                 <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: '100%' }}>
                   Correct Answer

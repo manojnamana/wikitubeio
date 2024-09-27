@@ -12,15 +12,11 @@ const TranscriptPage: React.FC = () => {
   const [transcript, setTranscript] = useState<Transcript | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Automatically fetch transcript when videoLink changes
   useEffect(() => {
     const fetchTranscript = async () => {
-      // Only fetch if videoLink is not empty
       if (!videoLink) return;
 
-      // Extract the video ID from the YouTube URL
       const videoId = videoLink.split("v=")[1]?.split("&")[0];
-     
 
       if (!videoId) {
         setError("Invalid YouTube link.");
@@ -30,7 +26,8 @@ const TranscriptPage: React.FC = () => {
       setError(null);
 
       try {
-        const res = await fetch(`https://wikitubeio.vercel.app/api/hello?videoId=${videoId}`);
+        console.log(`Fetching transcript for video ID: ${videoId}`);
+        const res = await fetch(`/api/hello?videoId=${videoId}`);
         const data = await res.json();
 
         if (data.transcript) {
@@ -39,16 +36,16 @@ const TranscriptPage: React.FC = () => {
           setTranscript(null);
           setError("No transcript available for this video.");
         }
-      } catch (err) {
+      } catch (err:any) {
+        console.error(`Error fetching transcript: ${err.message}`);
         setTranscript(null);
         setError("Error fetching transcript.");
       }
     };
 
-    fetchTranscript(); // Fetch transcript when videoLink changes
-  }, [videoLink]); // Add videoLink as dependency so it runs on change
+    fetchTranscript();
+  }, [videoLink]);
 
-  // Fallback to 0:00 if offset is missing or invalid
   const formatTime = (seconds: number | undefined) => {
     if (typeof seconds !== "number" || isNaN(seconds)) {
       return "0:00";
@@ -60,15 +57,14 @@ const TranscriptPage: React.FC = () => {
 
   return (
     <>
-      {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
+      {error && <Typography color="error">{error}</Typography>}
 
-      {/* Display transcript */}
       {transcript && (
         <Stack style={{ whiteSpace: "pre-wrap" }}>
           {transcript.map((entry, index) => (
             <Stack flexDirection={"row"} key={index} style={{ marginBottom: "10px" }}>
-              <Link href="#" underline="none" >{formatTime(entry.offset)}</Link>
-              <Typography sx={{pl:1}}> {entry.text}</Typography>
+              <Link href="#" underline="none">{formatTime(entry.offset)}</Link>
+              <Typography sx={{ pl: 1 }}>{entry.text}</Typography>
             </Stack>
           ))}
         </Stack>

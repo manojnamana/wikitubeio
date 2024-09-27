@@ -18,6 +18,14 @@ export interface Hyperlink {
     content_id: number;
     content_name: string;
   }
+
+  export interface Videos{
+    video_played_id: number;
+    video_title:string;
+    video_description:string;
+    channel_name:string;
+
+  }
   
   export interface ArticleTypes {
     id: number;
@@ -30,5 +38,6 @@ export interface Hyperlink {
     hyperlinks: Hyperlink[];
     quizzes: Quiz[];
     content: Content[];
+    videos:Videos[];
   }
   

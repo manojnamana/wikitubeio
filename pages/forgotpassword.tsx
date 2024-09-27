@@ -81,7 +81,7 @@ const ForgotPassword = () => {
             margin="dense"
             id="name"
             name="email"
-            label="Email Address"
+            // label="Email Address"
             sx={{ mb: 3 }}
             placeholder='Email'
             type="email"

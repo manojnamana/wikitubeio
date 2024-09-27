@@ -102,9 +102,9 @@ const Login = () => {
             margin="dense"
             id="name"
             name="email"
-            label="Email Address"
+            // label="Email Address"
             sx={{ mb: 3 }}
-            placeholder='Email'
+            placeholder='Email Address'
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -113,10 +113,10 @@ const Login = () => {
           />
         </FormControl>
         <FormControl sx={{ m: 1, width: '80%' }} required variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+          {/* <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel> */}
           <OutlinedInput
             placeholder='Password'
-            id="outlined-adornment-password"
+            // id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -132,7 +132,7 @@ const Login = () => {
                 </IconButton>
               </InputAdornment>
             }
-            label="Password"
+            // label="Password"
           />
         </FormControl>
        {waiting ?<Button variant='contained'  disabled sx={{ my: 3 }} >Login</Button>: <Button variant='contained'  type='submit' sx={{ my: 3 }} >Login</Button>}
