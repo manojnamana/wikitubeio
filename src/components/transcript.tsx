@@ -27,7 +27,7 @@ const TranscriptPage: React.FC = () => {
 
       try {
         console.log(`Fetching transcript for video ID: ${videoId}`);
-        const res = await fetch(`/api/hello?videoId=${videoId}`);
+        const res = await fetch(`https://wikitubeio.vercel.app/api/hello?videoId=${videoId}`);
         const data = await res.json();
 
         if (data.transcript) {
