@@ -20,12 +20,16 @@ const Register = () => {
   const [gender, setGender] = React.useState('');
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [openSuccessSnackbar, setOpenSuccessSnackbar] = React.useState(false);
+  const [confPassword,setConfPassword] = React.useState('');
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
   const [waiting, setwaiting] = React.useState(false);
+  const [showConfPassword, setShowConfPassword] = React.useState(false);
+  const [countryCode, setCountryCode] = React.useState('+91'); // Default country code
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: { preventDefault: () => any; }) => event.preventDefault();
-   const navigate = useRouter()
+   const navigate = useRouter();
+   const handleClickShowConfPassword = () => setShowConfPassword((show) => !show);
 
   const validateEmail = (email: string) => {
     // Basic email validation regex
@@ -36,29 +40,37 @@ const Register = () => {
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
 
-    if (!firstName || !lastName  || !email || !password || !phonenumber|| !gender || !dateOfBirth) {
+    if (!firstName || !lastName  || !email || !password || !phonenumber|| !gender || !dateOfBirth || !confPassword) {
       setSnackbarMessage('Please fill in all fields.');
       setOpenSnackbar(true);
     } else if (!validateEmail(email)) {
       setSnackbarMessage('Please enter a valid email address.');
       setOpenSnackbar(true);
+    }
+    else if (password !== confPassword) {
+      setSnackbarMessage('Password and Confirm Password Should Be Same');
+      setOpenSnackbar(true);
     } else {
-      // setSnackbarMessage('Registertion Success!');
-      // setOpenSuccessSnackbar(true);
-      setwaiting(true)
+      setwaiting(true);
       try {
-        setwaiting(true)
-       const response =  await axios.post('https://wikitubeio-backend.vercel.app/api/register/', {first_name:firstName,last_name:lastName, email, password,phone_number:phonenumber,date_of_birth:dateOfBirth,gender });
+        const response =  await axios.post('https://wikitubeio-backend.vercel.app/api/register/', {
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          password: confPassword,
+          phone_number: `${countryCode}${phonenumber}`,
+          date_of_birth: dateOfBirth,
+          gender
+        });
         if (response.status === 201 || response.status === 200) {
-          setSnackbarMessage('Verfication Link Sent To Your Mail!');
+          setSnackbarMessage('Verification Link Sent To Your Mail!');
           setOpenSuccessSnackbar(true);
-          setwaiting(false)
-          // setSnackbarMessage('Registertion Success!');
+          setwaiting(false);
           setTimeout(() => navigate.push("/"), 3000); 
         }
-      } catch (error:any) {
-        setwaiting(false)
-        setSnackbarMessage(error.response?.data?.error );
+      } catch (error: any) {
+        setwaiting(false);
+        setSnackbarMessage(error.response?.data?.error);
         setOpenSnackbar(true);
       }
     }
@@ -105,7 +117,6 @@ const Register = () => {
             <FormControl sx={{ ml: 2, width: {md:'90%',xs:"95%"} }} variant="outlined">
               <TextField
                 id="FirstName"
-                // label="First Name"
                 required
                 placeholder='First Name'
                 value={firstName}
@@ -118,7 +129,6 @@ const Register = () => {
             <FormControl sx={{ ml: 2, width: {md:'90%',xs:"95%"}}} variant="outlined">
               <TextField
                 id="LastName"
-                // label="Last Name"
                 required
                 placeholder='Last Name'
                 value={lastName}
@@ -130,7 +140,18 @@ const Register = () => {
 
           <Grid xs={12} md={6}>
             <FormControl sx={{ ml: 2, width: {md:'90%',xs:"95%"} }} variant="outlined">
-            <TextField type='date' id = "dateOfBirth" required   value={dateOfBirth} sx={{mb:3}} onChange={(e)=>setDateOfBirth(e.target.value)} />
+            <TextField 
+              type='date' 
+              id="dateOfBirth" 
+              required 
+              value={dateOfBirth} 
+              sx={{mb:3}} 
+              onChange={(e) => setDateOfBirth(e.target.value)} 
+              inputProps={{
+                min: "2009-01-01", // Minimum date
+                max: new Date().toISOString().split("T")[0] // Today's date
+              }}
+            />
             </FormControl>
           </Grid>
           <Grid xs={12} md={6}>
@@ -158,7 +179,6 @@ const Register = () => {
             <FormControl sx={{ ml: 2, width: '95%' }} variant="outlined">
               <TextField
                 id="email"
-                // label="Email"
                 type='email'
                 required
                 placeholder='Email'
@@ -171,74 +191,123 @@ const Register = () => {
             </FormControl>
           </Grid>
           <Grid xs={12}>
-            <FormControl sx={{ ml: 2, width: '95%' ,mb:3}} required variant="outlined">
-              {/* <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel> */}
-              <OutlinedInput
-                id="outlined-adornment-password"
-                placeholder='Password'
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                // label="Password"
-              />
-            </FormControl>
+          <FormControl sx={{ ml: 2, width: '95%' }} required variant="outlined">
+          <OutlinedInput
+            placeholder='Password'
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            sx={{ mb: 3 }}
+            endAdornment={            
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
           </Grid>
           <Grid xs={12}>
-            <FormControl sx={{ ml: 2, width: '95%' }} variant="outlined">
-              <TextField
-                id="phonenumber"
-                // label="Phonenumber"
-                required
-                placeholder='Phonenumber'
-                type='number'
-                value={phonenumber}
-                onChange={(e) => setPhonenumber (e.target.value)}
+          <FormControl sx={{ ml: 2, width: '95%' }} required variant="outlined">
+          <OutlinedInput
+            placeholder='Confirm Password'
+            id="outlined-adornment-password"
+            type={showConfPassword ? 'text' : 'password'}
+            value={confPassword}
+            onChange={(e) => setConfPassword(e.target.value)}
+            sx={{ mb: 3 }}
+            endAdornment={            
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowConfPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showConfPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+          </Grid>
+
+          {/* <Grid xs={12} md={6}>
+            <FormControl sx={{ ml: 2, width: {md:'90%',xs:"95%"}}} variant="outlined">
+              <Select
+                labelId='CountryCodelabel'
+                id="countryCode"
+                value={countryCode}
+                label="Country Code"
+                onChange={(e) => setCountryCode(e.target.value)}
                 sx={{ mb: 3 }}
+              >
+                <MenuItem value="+1">+1 (US)</MenuItem>
+                <MenuItem value="+44">+44 (UK)</MenuItem>
+                <MenuItem value="+91">+91 (India)</MenuItem>
+
+              </Select>
+            </FormControl>
+          </Grid> */}
+          <Grid xs={12} >
+
+            <FormControl sx={{ ml: 2, width: {xs:"95%"}}} variant="outlined">
+              <Stack flexDirection={"row"} >
+            <Select
+                labelId='CountryCodelabel'
+                id="countryCode"
+                value={countryCode}
+                onChange={(e) => setCountryCode(e.target.value)}
+                sx={{ mb: 3 ,minHeight:20,mr:2}}
+                size='small'
+              >
+                <MenuItem value="+1">+1</MenuItem>
+                <MenuItem value="+44">+44</MenuItem>
+                <MenuItem value="+91">+91</MenuItem>
+                {/* Add more country codes as needed */}
+              </Select>
+              <TextField
+                id="PhoneNumber"
+                required
+                placeholder='Phone Number'
+                type="tel"
+                value={phonenumber}
+                onChange={(e) => setPhonenumber(e.target.value)}
+                sx={{ mb: 3 ,width:"100%"}}
               />
+              </Stack>
             </FormControl>
           </Grid>
 
         </Grid>
-        {waiting?<Button variant='contained' disabled type='button' sx={{ my: 3 }}>Register</Button>:<Button variant='contained' type='submit' sx={{ my: 3 }}>Register</Button>}
+        <Grid container alignItems={"center"} justifyContent={"center"}>
 
-        <Typography mr={2}>Already have an account?</Typography>
-        <Link href="/" style={{ textDecoration: "none", fontSize: 20 }}>Login</Link>
+          <Button variant='contained' disabled={waiting} sx={{ px: { md: 5, xs: 5 }, width: { md: "80%", xs: "90%" }, textTransform: "capitalize", my: 3 }} onClick={handleSubmit}>Register</Button>
+        </Grid>
+        <Typography my={2}>Already Have an account?<Link href="/" ml={2} underline='none'>Sign In</Link></Typography>
+
+        <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+          <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+        <Snackbar open={openSuccessSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+          <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
       </Paper>
       </Grid>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-
-      <Snackbar
-        open={openSuccessSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
       </Grid>
     </Box>
   );
-}
+};
 
 export default Register;
