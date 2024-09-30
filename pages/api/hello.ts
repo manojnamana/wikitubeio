@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { YoutubeTranscript, TranscriptResponse } from "youtube-transcript";
+// @ts-ignore
+import { getSubtitles } from 'youtube-captions-scraper';
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,9 +24,15 @@ export default async function handler(
   }
 
   try {
-    const transcript: TranscriptResponse[] = await YoutubeTranscript.fetchTranscript(videoId);
-    res.status(200).json({ transcript });
+    const captions = await getSubtitles({
+      videoID: videoId, // YouTube video id
+      lang: 'en'     // default language is 'en'
+    });
+    
+    // console.log(captions);
+    res.status(200).json({ captions });
   } catch (error) {
+    console.error('Error fetching subtitles:', error);
     res.status(500).json({ error: "Error fetching transcript" });
   }
 }

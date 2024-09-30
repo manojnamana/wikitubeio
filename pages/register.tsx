@@ -49,7 +49,7 @@ const Register = () => {
     const day = parseInt(match[3], 10);
     const now = new Date();
 
-    if (year < 2009 || year > now.getFullYear()) return false;
+    if (year > 2009 || year > now.getFullYear()) return false;
     if (month < 1 || month > 12) return false;
 
     const lastDayOfMonth = new Date(year, month, 0).getDate();

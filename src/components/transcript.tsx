@@ -1,10 +1,13 @@
+
+
 import { Link, Stack, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
+import { YoutubeTranscript } from 'youtube-transcript';
 
 type Transcript = {
   text: string;
-  offset?: number; // Marking offset as optional
-  duration?: number;
+  start?: number; // Marking offset as optional
+  dur?: number;
 }[];
 
 const TranscriptPage: React.FC = () => {
@@ -29,9 +32,10 @@ const TranscriptPage: React.FC = () => {
         console.log(`Fetching transcript for video ID: ${videoId}`);
         const res = await fetch(`/api/hello?videoId=${videoId}`);
         const data = await res.json();
+        console.log(data.captions)
 
-        if (data.transcript) {
-          setTranscript(data.transcript);
+        if (data.captions) {
+          setTranscript(data.captions);
         } else {
           setTranscript(null);
           setError("No transcript available for this video.");
@@ -45,6 +49,8 @@ const TranscriptPage: React.FC = () => {
 
     fetchTranscript();
   }, [videoLink]);
+
+ 
 
   const formatTime = (seconds: number | undefined) => {
     if (typeof seconds !== "number" || isNaN(seconds)) {
@@ -63,7 +69,7 @@ const TranscriptPage: React.FC = () => {
         <Stack style={{ whiteSpace: "pre-wrap" }}>
           {transcript.map((entry, index) => (
             <Stack flexDirection={"row"} key={index} style={{ marginBottom: "10px" }}>
-              <Link href="#" underline="none">{formatTime(entry.offset)}</Link>
+              <Link href="#" underline="none">{formatTime(entry.start)}</Link>
               <Typography sx={{ pl: 1 }}>{entry.text}</Typography>
             </Stack>
           ))}
