@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { YoutubeTranscript, TranscriptResponse } from "youtube-transcript";
 // @ts-ignore
 import { getSubtitles } from 'youtube-captions-scraper';
 

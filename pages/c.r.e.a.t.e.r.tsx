@@ -1,11 +1,11 @@
-import { Button, colors, Paper, Stack, Typography } from "@mui/material";
+import { Button, colors, IconButton, Paper, Stack, Typography } from "@mui/material";
 import * as React from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 
-import { East, PlayCircle, West } from "@mui/icons-material";
+import { East, MoreVert, PlayCircle, Settings, West } from "@mui/icons-material";
 import axios from "axios";
 import { ArticleTypes } from "@/types/articleTypes";
 
@@ -34,6 +34,7 @@ const Creater = () => {
     const [value, setValue] = React.useState('Computation');
     const [courseLis, setCourseLis] = React.useState<ArticleTypes[] | null>(null); 
     const [waiting ,setWaiting] = React.useState(true)
+    const [show,setShow] = React.useState(false)
 
 
     React.useEffect(() => {
@@ -64,7 +65,12 @@ const Creater = () => {
         <Stack sx={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
             <Paper elevation={3} sx={{ my: 3, width: { md: "70%" }, p: 3 }}>
                 <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} alignItems={"center"} justifyContent={"space-between"}>
+                    <Stack display={"flex"} flexDirection={"row"} gap={2}>
+                    {show?<IconButton onClick={()=>setShow(false)}><MoreVert/></IconButton>:<IconButton onClick={()=>setShow(true)}><MoreVert/></IconButton>}
                     <Typography fontSize={25} fontWeight={"bold"} py={2}>C.R.E.A.T.E.R.</Typography>
+                    </Stack>
+                    
+                    
 
                     <Stack display={"flex"} flexDirection={"row"} gap={2}>
                         <Button variant="contained" style={{ borderRadius: 50 }} color="success">Go!</Button>
@@ -73,8 +79,8 @@ const Creater = () => {
                     </Stack>
                 </Stack>
 
-                <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} justifyContent={"space-between"}>
-                    <Stack>
+                <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} justifyContent={show?'space-between':'center'}>
+                    {show&&<Stack>
                         <FormControl>
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
@@ -101,11 +107,29 @@ const Creater = () => {
                                 ))}
                             </RadioGroup>
                         </FormControl>
-                    </Stack>
+                    </Stack>}
 
-                    <Paper elevation={0} sx={{ p: 3, overflowY: "hidden", overflowX: { xs: "scroll", md: "hidden" }, mr: { md: "35%", xs: 0 } }} >
-                        <Stack flexDirection={{ xs: "row", md: "column" }} gap={2} maxWidth={160}>
+                    <Paper elevation={0} sx={{ p: 3, overflowY: "hidden", overflowX: { xs: "scroll", md: "hidden" }, mr: { md: 0, xs: 0 } }} >
+                        <Stack flexDirection={{ xs: "row", md: "column" }} gap={2} maxWidth={{md:480,xs:160}}>
                             <Stack>
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:160}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
+                                </Paper>
+
+                            </Stack>
+                            <Stack>
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:160}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
+                                </Paper>
+
+                            </Stack>
+                            <Stack>
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:160}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
+                                </Paper>
+
+                            </Stack>
+                            {/* <Stack>
                                 <Paper elevation={0} sx={{ bgcolor: "lightgray", width: 160, height: 90, alignItems: "center", display: "flex", justifyContent: "center" }}>
                                     <PlayCircle color="primary" sx={{ fontSize: 50 }} />
                                 </Paper>
@@ -116,25 +140,7 @@ const Creater = () => {
                                     <PlayCircle color="primary" sx={{ fontSize: 50 }} />
                                 </Paper>
 
-                            </Stack>
-                            <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: 160, height: 90, alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
-                                </Paper>
-
-                            </Stack>
-                            <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: 160, height: 90, alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
-                                </Paper>
-
-                            </Stack>
-                            <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: 160, height: 90, alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
-                                </Paper>
-
-                            </Stack>
+                            </Stack> */}
 
                         </Stack>
                     </Paper>

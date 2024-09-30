@@ -28,6 +28,7 @@ export interface Hyperlink {
   }
   
   export interface ArticleTypes {
+    userperformance: number;
     id: number;
     course_name: number;
     article_name: string;
