@@ -29,9 +29,9 @@ const TranscriptPage: React.FC = () => {
 
       try {
         console.log(`Fetching transcript for video ID: ${videoId}`);
-        const res = await fetch(`https://wikitube-backend-ten.vercel.app/api/get_subtitles/?videoId=${videoId}>`);
+        const res = await fetch(`/api/hello/?videoId=${videoId}>`);
         const data = await res.json();
-        console.log(data.captions)
+        // console.log(data.captions)
 
         if (data.captions) {
           setTranscript(data.captions);

@@ -110,21 +110,21 @@ const Creater = () => {
                     </Stack>}
 
                     <Paper elevation={0} sx={{ p: 3, overflowY: "hidden", overflowX: { xs: "scroll", md: "hidden" }, mr: { md: 0, xs: 0 } }} >
-                        <Stack flexDirection={{ xs: "row", md: "column" }} gap={2} maxWidth={{md:480,xs:160}}>
+                        <Stack flexDirection={show?{  xs: "row",md:'column' }:{  xs: "column" }} display={"flex"} justifyContent={"center"} gap={2} maxWidth={{md:480,xs:160}}>
                             <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:160}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:200}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
                                     <PlayCircle color="primary" sx={{ fontSize: 50 }} />
                                 </Paper>
 
                             </Stack>
                             <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:160}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:200}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
                                     <PlayCircle color="primary" sx={{ fontSize: 50 }} />
                                 </Paper>
 
                             </Stack>
                             <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:160}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:200}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
                                     <PlayCircle color="primary" sx={{ fontSize: 50 }} />
                                 </Paper>
 

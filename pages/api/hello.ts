@@ -28,6 +28,7 @@ export default async function handler(
       lang: 'en'     // default language is 'en'
     });
     
+    console.log(getSubtitles)
     // console.log(captions);
     res.status(200).json({ captions });
   } catch (error) {
