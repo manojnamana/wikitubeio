@@ -1,11 +1,12 @@
-import { Button, colors, IconButton, Paper, Stack, Typography } from "@mui/material";
+/* eslint-disable @next/next/no-img-element */
+import { Button, colors, Fab, IconButton, Paper, Stack, Typography } from "@mui/material";
 import * as React from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 
-import { East, MoreVert, PlayCircle, Settings, West } from "@mui/icons-material";
+import { Add, East, MoreVert, PlayCircle, RampRight, Settings, West } from "@mui/icons-material";
 import axios from "axios";
 import { ArticleTypes } from "@/types/articleTypes";
 
@@ -13,6 +14,7 @@ import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgres
 
 import Box from '@mui/material/Box';
 import Loading from "@/src/components/loading";
+import { useRouter } from "next/router";
 
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
@@ -31,6 +33,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
   }
 
 const Creater = () => {
+    const navigate = useRouter()
     const [value, setValue] = React.useState('Computation');
     const [courseLis, setCourseLis] = React.useState<ArticleTypes[] | null>(null); 
     const [waiting ,setWaiting] = React.useState(true)
@@ -109,38 +112,52 @@ const Creater = () => {
                         </FormControl>
                     </Stack>}
 
-                    <Paper elevation={0} sx={{ p: 3, overflowY: "hidden", overflowX: { xs: "scroll", md: "hidden" }, mr: { md: 0, xs: 0 } }} >
-                        <Stack flexDirection={show?{  xs: "row",md:'column' }:{  xs: "column" }} display={"flex"} justifyContent={"center"} gap={2} maxWidth={{md:480,xs:160}}>
+                    <Paper elevation={0} sx={{ p: 3, overflowY: "scroll", scrollbarWidth:0, maxHeight:400, overflowX: { xs: "scroll", md: "hidden" }, mr: { md: 0, xs: 0 }, '&::-webkit-scrollbar': {
+          display: 'none', 
+        }, '-ms-overflow-style':'none',mb:2}}  >
+                        <Stack flexDirection={show?{  xs: "row",md:'column' }:{  xs: "column" }} display={"flex"} justifyContent={!show?{  xs: "start",md:'center' }:   "start" }  gap={2} maxWidth={{md:480,xs:200}}>
                             <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:200}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:400,xs:200},  alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                    {/* <PlayCircle color="primary" sx={{ fontSize: 50 }} /> */}
+                                    <img src='/static/images/calculus.jpg' alt="calculus" width={'100%'} onClick={()=>(navigate.push('/tube/2?name=calculus'))} />
                                 </Paper>
 
                             </Stack>
                             <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:200}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:400,xs:200},  alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                    {/* <PlayCircle color="primary" sx={{ fontSize: 50 }} /> */}
+                                    <img src='/static/images/geometry.jpg' alt="geometry" width={'100%'} onClick={()=>(navigate.push('/tube/3?name=geometry'))} />
+                                </Paper>
+                            </Stack>
+                            <Stack>
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:400,xs:200},  alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                    {/* <PlayCircle color="primary" sx={{ fontSize: 50 }} /> */}
+                                    <img src='/static/images/robotics.jpg' alt="calculus" width={'100%'}  />
                                 </Paper>
 
                             </Stack>
                             <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:480,xs:200}, height: {md:180,xs:90}, alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:400,xs:200},  alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                    {/* <PlayCircle color="primary" sx={{ fontSize: 50 }} /> */}
+                                    <img src='/static/images/energy.jpg' alt="calculus" width={'100%'}  />
+                                </Paper>
+                            </Stack>
+                            <Stack>
+                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:400,xs:200},  alignItems: "center", display: "flex", justifyContent: "center" }}>
+                                    {/* <PlayCircle color="primary" sx={{ fontSize: 50 }} /> */}
+                                    <img src='/static/images/computation.jpg' alt="calculus" width={'100%'}  />
                                 </Paper>
 
                             </Stack>
+
+
+
                             {/* <Stack>
                                 <Paper elevation={0} sx={{ bgcolor: "lightgray", width: 160, height: 90, alignItems: "center", display: "flex", justifyContent: "center" }}>
                                     <PlayCircle color="primary" sx={{ fontSize: 50 }} />
                                 </Paper>
 
-                            </Stack>
-                            <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: 160, height: 90, alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
-                                </Paper>
-
-                            </Stack> */}
+                            </Stack>  */}
 
                         </Stack>
                     </Paper>

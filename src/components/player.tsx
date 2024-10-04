@@ -97,7 +97,8 @@ const quizz = articleData.quizzes
 
 
   const linkWords: Record<string, string> = articleData.hyperlinks.reduce((acc: Record<string, string>, link) => {
-    acc[link.hyper_link_word] = link.hyper_link_word_url;
+    // acc[link.hyper_link_word] = link.hyper_link_word_url;
+    acc[`Calculus`] = link.hyper_link_word_url;
     return acc;
   }, {} as Record<string, string>);
 
@@ -130,11 +131,11 @@ const quizz = articleData.quizzes
     });
   };
   const splittingDescription = articleData.description.split('\r\n');
-
+  if (waiting) return <Loading/>
 
     return(
-      <>
-        {waiting ?(<Loading/>):(<Stack px={"10%"}>
+
+<Stack px={"10%"}>
 
         <Grid container mt={5}>
             <Grid md={7}>
@@ -258,8 +259,7 @@ const quizz = articleData.quizzes
                 </Alert>
               )}
             </Snackbar>
-        </Stack>)}
-        </>
+        </Stack>
     )
 }
 

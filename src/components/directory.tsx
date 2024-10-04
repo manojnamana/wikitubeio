@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -42,7 +44,8 @@ const Directory = ({
 
   // Create a dictionary of links from the hyperlinks array
   const linkWords: Record<string, string> = hyperlinks.reduce((acc: Record<string, string>, link) => {
-    acc[link.hyper_link_word] = link.hyper_link_word_url;
+    // acc[link.hyper_link_word] = link.hyper_link_word_url;
+    acc[`Calculus`] = link.hyper_link_word_url;
     return acc;
   }, {} as Record<string, string>);
 
@@ -56,13 +59,16 @@ const Directory = ({
       >
         {calculusVisible ? '[-]' : '[+]'}
       </IconButton>
-      <Link href={`${word.toLowerCase()}`} underline="none">
+      {/* <Link href={`${word.toLowerCase()}`} underline="none">
         {word}
+      </Link> */}
+      <Link href={`${word.toLowerCase()}`} underline="none">
+        {`Calculus`}
       </Link>
 
       {calculusVisible && (
         <Stack maxWidth={"100%"}>
-          <CarouselComponent />
+          <CarouselComponent hrefLinkWord={hyperlinks[0][`hyper_link_word`]} />
         </Stack>
       )}
     </span>

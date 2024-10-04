@@ -22,7 +22,9 @@ const CarouselComponent: React.FC = () => {
     const fetching = async () => {
       try {
         const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/${article_name}/`);
+        console.log(response.data)
         if (response.status === 200) {
+          
           
           const fetchedItems: Item[] = [
             {
@@ -76,7 +78,7 @@ interface CarouselItemProps {
   item: Item;
 }
 
-const CarouselItem: React.FC<CarouselItemProps> = ({ item }) => {
+const CarouselItem: React.FC<CarouselItemProps> = ({ item },hrefLinkWord) => {
   return (
     <Link href={`/tube/${item.id}?name=${encodeURIComponent(item.name)}`} passHref>
       <Stack>
