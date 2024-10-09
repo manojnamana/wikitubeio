@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { Button, colors, Fab, IconButton, Paper, Stack, Typography } from "@mui/material";
+import { Button, colors, Fab, IconButton, Link, Paper, Stack, Typography } from "@mui/material";
 import * as React from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 
-import { Add, East, MoreVert, PlayCircle, RampRight, Settings, West } from "@mui/icons-material";
+import { Add, East, KeyboardDoubleArrowRight, MoreVert, PlayCircle, RampRight, Settings, West } from "@mui/icons-material";
 import axios from "axios";
 import { ArticleTypes } from "@/types/articleTypes";
 
@@ -31,6 +31,36 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
       </Box>
     );
   }
+
+
+  const imagesWithText = [
+    {
+    name:'calculus',
+    title:"Calculus",
+    image:"/static/images/calculus.jpg"
+  },
+  {
+    name:'geometry',
+    title:"Geometry",
+    image:"/static/images/geometry.jpg"
+  },
+  {
+    name:'computation',
+    title:"Computation",
+    image:"/static/images/computation.jpg"
+  },
+  {
+    name:'energy',
+    title:"Energy",
+    image:"/static/images/energy.jpg"
+  },
+  {
+    name:'robotics',
+    title:"Robotics",
+    image:"/static/images/robotics.jpg"
+  },
+]
+
 
 const Creater = () => {
     const navigate = useRouter()
@@ -69,7 +99,7 @@ const Creater = () => {
             <Paper elevation={3} sx={{ my: 3, width: { md: "70%" }, p: 3 }}>
                 <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} alignItems={"center"} justifyContent={"space-between"}>
                     <Stack display={"flex"} flexDirection={"row"} gap={2}>
-                    {show?<IconButton onClick={()=>setShow(false)}><MoreVert/></IconButton>:<IconButton onClick={()=>setShow(true)}><MoreVert/></IconButton>}
+                    {show?<IconButton onClick={()=>setShow(false)}><KeyboardDoubleArrowRight/></IconButton>:<IconButton onClick={()=>setShow(true)}><KeyboardDoubleArrowRight/></IconButton>}
                     <Typography fontSize={25} fontWeight={"bold"} py={2}>C.R.E.A.T.E.R.</Typography>
                     </Stack>
                     
@@ -116,48 +146,23 @@ const Creater = () => {
           display: 'none', 
         }, '-ms-overflow-style':'none',mb:2}}  >
                         <Stack flexDirection={show?{  xs: "row",md:'column' }:{  xs: "column" }} display={"flex"} justifyContent={!show?{  xs: "start",md:'center' }:   "start" }  gap={2} maxWidth={{md:480,xs:200}}>
-                            <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:400,xs:200},  alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    {/* <PlayCircle color="primary" sx={{ fontSize: 50 }} /> */}
-                                    <img src='/static/images/calculus.jpg' alt="calculus" width={'100%'} onClick={()=>(navigate.push('/tube/2?name=calculus'))} />
-                                </Paper>
+                            
+                            {imagesWithText.map((item)=>(
+                                
+                                 <Stack key ={item.name}>
+                                 <Paper elevation={0} sx={{ bgcolor: "white", width: {md:400,xs:200},  alignItems: "center", display: "flex", flexDirection:"column" , justifyContent: "center" }}>
+                                     <img src={item.image} alt={item.name} width={'100%'} onClick={()=>(navigate.push(`/tube/2?name=${item.name}`))} />
+                                     <Link underline="hover" target="_blank" fontSize={{xs:20,md:25}}  fontStyle={"italic"} href={`/wiki/${item.name}`}>{item.title}</Link>
+                                 </Paper>
+ 
+                             </Stack>
+                            ))}
 
-                            </Stack>
-                            <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:400,xs:200},  alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    {/* <PlayCircle color="primary" sx={{ fontSize: 50 }} /> */}
-                                    <img src='/static/images/geometry.jpg' alt="geometry" width={'100%'} onClick={()=>(navigate.push('/tube/3?name=geometry'))} />
-                                </Paper>
-                            </Stack>
-                            <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:400,xs:200},  alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    {/* <PlayCircle color="primary" sx={{ fontSize: 50 }} /> */}
-                                    <img src='/static/images/robotics.jpg' alt="calculus" width={'100%'}  />
-                                </Paper>
-
-                            </Stack>
-                            <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:400,xs:200},  alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    {/* <PlayCircle color="primary" sx={{ fontSize: 50 }} /> */}
-                                    <img src='/static/images/energy.jpg' alt="calculus" width={'100%'}  />
-                                </Paper>
-                            </Stack>
-                            <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: {md:400,xs:200},  alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    {/* <PlayCircle color="primary" sx={{ fontSize: 50 }} /> */}
-                                    <img src='/static/images/computation.jpg' alt="calculus" width={'100%'}  />
-                                </Paper>
-
-                            </Stack>
+                           
 
 
 
-                            {/* <Stack>
-                                <Paper elevation={0} sx={{ bgcolor: "lightgray", width: 160, height: 90, alignItems: "center", display: "flex", justifyContent: "center" }}>
-                                    <PlayCircle color="primary" sx={{ fontSize: 50 }} />
-                                </Paper>
-
-                            </Stack>  */}
+                          
 
                         </Stack>
                     </Paper>
