@@ -5,8 +5,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import {
-  Alert, Button, FormControl, IconButton, Link, MenuItem, Paper, Select, SelectChangeEvent, Snackbar, Stack, Typography
+  Alert, Button, FormControl, IconButton, Link, MenuItem, Paper, Select, SelectChangeEvent, Snackbar, Stack, Tooltip, Typography
 } from '@mui/material';
+import axios from 'axios';
 import Loading from './loading';
 import CarouselComponent from './carousel';
 
@@ -29,22 +30,55 @@ const Directory = ({
   content: { content_id: number; content_name: string; }[];
   waiting: boolean;
 }) => {
-  const [lang, setLang] = React.useState<string>("10");
+  const [lang, setLang] = React.useState<string>("10");  // Default language set to English (value "10")
   const [open, setOpen] = React.useState<boolean>(false);
   const [correctAns, setCorrectAns] = React.useState<boolean>(false);
   const [calculusVisible, setCalculusVisible] = React.useState<boolean>(false);
+  const [translatedName, setTranslatedName] = React.useState<string>(article_name);
+  const [translatedQuizName, setTranslatedQuizName] = React.useState<string>(`${article_name} Quiz`);
+  const [translatedQuestion,setTranslatedQuestion] = React.useState<string>(quizzes.question);
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setLang(event.target.value as string);
+  const handleChange = async (event: SelectChangeEvent) => {
+    const selectedLang = event.target.value as string;
+    setLang(selectedLang);
+
+    // Translate article_name to the selected language
+    try {
+      const targetLanguageMap: Record<string, string> = {
+        "10": "en",  // English
+        "20": "ru",  // Russian
+        "30": "fr",  // French
+        "40": "de",  // German
+        "50": "sw",  // Swahili
+        "60": "es",  // Spanish
+      };
+      const targetLanguage = targetLanguageMap[selectedLang];
+
+      const response = await axios.post('/api/translate', {
+        text: [article_name,' Quiz',`,${quizzes[0].question}`],
+        targetLanguage
+      });
+
+      const translatedText = response.data.translatedText;
+      setTranslatedName(translatedText.split(',')[0]);
+
+      const translatedQuizName = response.data.translatedText;
+      setTranslatedQuizName(translatedText.split(','))
+
+      const translatedQuestion = response.data.translatedText;
+      setTranslatedQuestion(translatedText.split(',')[2]);
+
+    } catch (error) {
+      console.error("Translation error:", error);
+    }
   };
 
   // Create a dictionary of links from the hyperlinks array
   const linkWords: Record<string, string> = hyperlinks.reduce((acc: Record<string, string>, link) => {
-    // acc[link.hyper_link_word] = link.hyper_link_word_url;
     acc[`Calculus`] = link.hyper_link_word_url;
     return acc;
   }, {} as Record<string, string>);
@@ -52,16 +86,15 @@ const Directory = ({
   // Function to create button and link for a word
   const createLinkWithButton = (word: string, url: string) => (
     <span key={word + Math.random()}>
-      <IconButton
-        color='primary'
-        size='small'
-        onClick={() => setCalculusVisible(prev => !prev)}
-      >
-        {calculusVisible ? '[-]' : '[+]'}
-      </IconButton>
-      {/* <Link href={`${word.toLowerCase()}`} underline="none">
-        {word}
-      </Link> */}
+      <Tooltip title="click here">
+        <IconButton
+          color='primary'
+          size='small'
+          onClick={() => setCalculusVisible(prev => !prev)}
+        >
+          {calculusVisible ? '[-]' : '[+]'}
+        </IconButton>
+      </Tooltip>
       <Link href={`${word.toLowerCase()}`} underline="none">
         {`Calculus`}
       </Link>
@@ -78,15 +111,14 @@ const Directory = ({
   const renderDescription = (text: string) => {
     const words = text.split(' ');
     const elements: JSX.Element[] = [];
-  
+
     for (let i = 0; i < words.length; i++) {
       let word = words[i];
       let cleanedWord = word.replace(/[\.,]/g, ''); // Clean punctuation for accurate matching
-  
-      // Check for phrases or single word matches
+
       let matchedPhrase = '';
       let matchedUrl = '';
-  
+
       for (let j = i; j < words.length; j++) {
         const phrase = words.slice(i, j + 1).join(' ').replace(/[\.,]/g, '');
         if (linkWords[phrase]) {
@@ -94,7 +126,7 @@ const Directory = ({
           matchedUrl = linkWords[phrase];
         }
       }
-  
+
       if (matchedPhrase) {
         elements.push(
           <React.Fragment key={i}>
@@ -112,7 +144,7 @@ const Directory = ({
         elements.push(<span key={i}>{word} </span>);
       }
     }
-  
+
     return elements;
   };
 
@@ -153,7 +185,7 @@ const Directory = ({
             </Box>
 
             <Typography variant='h4' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{ pt: 5, pb: 1 }}>
-              {article_name}
+              {translatedName} {/* Updated to use translated article_name */}
             </Typography>
             <hr />
             <Paper elevation={3} sx={{ mt: 3, p: 2 }}>
@@ -175,7 +207,7 @@ const Directory = ({
 
             <Paper elevation={3} sx={{ mt: 2, p: 2, mb: 2 }}>
               <Typography variant='h5' component="div" fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"} sx={{ py: 1 }}>
-                {article_name} Quiz
+              {translatedQuizName}
               </Typography>
               <hr />
               {quizzes.map(quiz => (
@@ -235,3 +267,7 @@ const Directory = ({
 };
 
 export default Directory;
+function createLinkWithButton(matchedPhrase: string, matchedUrl: string): React.ReactNode {
+  throw new Error('Function not implemented.');
+}
+

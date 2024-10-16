@@ -1,38 +1,41 @@
-import { NextApiRequest, NextApiResponse } from "next";
-// @ts-ignore
-import { getSubtitles } from 'youtube-captions-scraper';
+// pages/api/translate.ts
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  // Add CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Allows any origin
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  // Handle OPTIONS method for preflight requests
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Only POST requests are allowed' });
   }
 
-  const { videoId } = req.query;
+  const { text, targetLang } = req.body;
 
-  if (!videoId || typeof videoId !== "string") {
-    return res.status(400).json({ error: "Invalid or missing videoId" });
+  if (!text || !targetLang) {
+    return res.status(400).json({ message: 'Text and target language are required' });
   }
 
   try {
-    const captions = await getSubtitles({
-      videoID: videoId, // YouTube video id
-      lang: 'en'     // default language is 'en'
+    const response = await fetch('https://libretranslate.com/translate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        q: text,
+        source: 'fr', // Assuming source language is English; you can make this dynamic
+        target: targetLang,
+        format: 'text',
+      }),
     });
-    
-    console.log(getSubtitles)
-    // console.log(captions);
-    res.status(200).json({ captions });
+
+    const data = await response.json();
+
+    if (response.status !== 200) {
+      return res.status(500).json({ message: 'Translation error', error: data });
+    }
+
+    const translatedText = data.translatedText;
+
+    res.status(200).json({ translatedText });
   } catch (error) {
-    console.error('Error fetching subtitles:', error);
-    res.status(500).json({ error: "Error fetching transcript" });
+    res.status(500).json({ message: 'Internal server error', error });
   }
 }

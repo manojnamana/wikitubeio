@@ -1,26 +1,23 @@
-/* eslint-disable @next/next/no-img-element */
 import { Button, colors, Fab, IconButton, Link, Paper, Stack, Typography } from "@mui/material";
 import * as React from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-
 import { Add, East, KeyboardDoubleArrowRight, MoreVert, PlayCircle, RampRight, Settings, West } from "@mui/icons-material";
 import axios from "axios";
 import { ArticleTypes } from "@/types/articleTypes";
-
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
-
 import Box from '@mui/material/Box';
 import Loading from "@/src/components/loading";
 import { useRouter } from "next/router";
 
+// Define the LinearProgressWithLabel component for progress bar
 function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Box sx={{ width: '200%', mr: 1 }}>
-          <LinearProgress color="warning"  variant="determinate" {...props} />
+          <LinearProgress color="warning" variant="determinate" {...props} />
         </Box>
         <Box sx={{ minWidth: 35 }}>
           <Typography
@@ -30,46 +27,27 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
         </Box>
       </Box>
     );
-  }
+}
 
-
-  const imagesWithText = [
-    {
-    name:'calculus',
-    title:"Calculus",
-    image:"/static/images/calculus.jpg"
-  },
-  {
-    name:'geometry',
-    title:"Geometry",
-    image:"/static/images/geometry.jpg"
-  },
-  {
-    name:'computation',
-    title:"Computation",
-    image:"/static/images/computation.jpg"
-  },
-  {
-    name:'energy',
-    title:"Energy",
-    image:"/static/images/energy.jpg"
-  },
-  {
-    name:'robotics',
-    title:"Robotics",
-    image:"/static/images/robotics.jpg"
-  },
-]
-
+// Dummy data representing the images with titles and names
+const imagesWithText = [
+  { id:"engineering", name: 'calculus', title: "Calculus at a Fifth Grade Level", image: "/static/images/calculus.jpg" },
+  {id:"engineering", name: 'geometry', title: "The Organic Chemistry Tuto", image: "/static/images/geometry.jpg" },
+  { id:"computation",name: 'computation', title: "Why study theory of computation?", image: "/static/images/computation.jpg" },
+  {id:"energy", name: 'energy', title: "What Are Sources of Energy?", image: "/static/images/energy.jpg" },
+  {id:"robotics", name: 'robotics', title: "What is ROBOTICS", image: "/static/images/robotics.jpg" },
+  {id:"technology", name: 'technology', title: "Information Technology", image: "/static/images/Technology.jpg" },
+  {id:"random", name: 'random', title: "Importance of Sports in Education", image: "/static/images/Random.jpg" },
+];
 
 const Creater = () => {
-    const navigate = useRouter()
-    const [value, setValue] = React.useState('Computation');
+    const navigate = useRouter();
+    const [value, setValue] = React.useState('Engineering'); // Default value set to 'computation'
     const [courseLis, setCourseLis] = React.useState<ArticleTypes[] | null>(null); 
-    const [waiting ,setWaiting] = React.useState(true)
-    const [show,setShow] = React.useState(false)
+    const [waiting, setWaiting] = React.useState(true);
+    const [show, setShow] = React.useState(false);
 
-
+    // Fetch the course list on component mount
     React.useEffect(() => {
         const fetching = async () => {
             try {
@@ -80,18 +58,22 @@ const Creater = () => {
                 setCourseLis(data);
             } catch (error) {
                 console.log(error);
-            }finally{
-                setWaiting(false)
+            } finally {
+                setWaiting(false);
             }
         };
         fetching();
     }, []);
 
+    // Handle RadioGroup value change
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
     };
 
-    if(waiting) return <Loading/>
+    // Filter the imagesWithText array based on the selected course
+    const filteredImages = imagesWithText.filter(item => item.id === value.toLowerCase());
+
+    if (waiting) return <Loading />;
     if (!courseLis) return null;
 
     return (
@@ -99,11 +81,11 @@ const Creater = () => {
             <Paper elevation={3} sx={{ my: 3, width: { md: "70%" }, p: 3 }}>
                 <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} alignItems={"center"} justifyContent={"space-between"}>
                     <Stack display={"flex"} flexDirection={"row"} gap={2}>
-                    {show?<IconButton onClick={()=>setShow(false)}><KeyboardDoubleArrowRight/></IconButton>:<IconButton onClick={()=>setShow(true)}><KeyboardDoubleArrowRight/></IconButton>}
-                    <Typography fontSize={25} fontWeight={"bold"} py={2}>C.R.E.A.T.E.R.</Typography>
+                        {show
+                            ? <IconButton onClick={() => setShow(false)}><KeyboardDoubleArrowRight /></IconButton>
+                            : <IconButton onClick={() => setShow(true)}><KeyboardDoubleArrowRight /></IconButton>}
+                        <Typography fontSize={25} fontWeight={"bold"} py={2}>C.R.E.A.T.E.R.</Typography>
                     </Stack>
-                    
-                    
 
                     <Stack display={"flex"} flexDirection={"row"} gap={2}>
                         <Button variant="contained" style={{ borderRadius: 50 }} color="success">Go!</Button>
@@ -112,8 +94,8 @@ const Creater = () => {
                     </Stack>
                 </Stack>
 
-                <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} justifyContent={show?'space-between':'center'}>
-                    {show&&<Stack>
+                <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }}  justifyContent={show ? 'space-between' : 'center'}>
+                    {show && <Stack>
                         <FormControl>
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
@@ -128,42 +110,29 @@ const Creater = () => {
                                             control={<Radio />}
                                             label={course.course_name as unknown as string} // Ensure label is a string
                                         />
-
                                         <Box sx={{ width: { xs: "100%", md: "200%" } }}>
-                                            <LinearProgressWithLabel  sx={{ borderRadius: 50,p:1}} value={1} />
-                                            </Box>
-                                        {/* <Stack flexDirection={"row"}>
-                                            <Paper sx={{ bgcolor: "blueviolet", width: { xs: "100%", md: "200%" }, color: "white", borderRadius: 50, textAlign: "center" }}></Paper>
-                                            100%
-                                        </Stack> */}
+                                            <LinearProgressWithLabel sx={{ borderRadius: 50, p: 1 }} value={1} />
+                                        </Box>
                                     </React.Fragment>
                                 ))}
                             </RadioGroup>
                         </FormControl>
                     </Stack>}
 
-                    <Paper elevation={0} sx={{ p: 3, overflowY: "scroll", scrollbarWidth:0, maxHeight:400, overflowX: { xs: "scroll", md: "hidden" }, mr: { md: 0, xs: 0 }, '&::-webkit-scrollbar': {
-          display: 'none', 
-        }, '-ms-overflow-style':'none',mb:2}}  >
-                        <Stack flexDirection={show?{  xs: "row",md:'column' }:{  xs: "column" }} display={"flex"} justifyContent={!show?{  xs: "start",md:'center' }:   "start" }  gap={2} maxWidth={{md:480,xs:200}}>
-                            
-                            {imagesWithText.map((item)=>(
-                                
-                                 <Stack key ={item.name}>
-                                 <Paper elevation={0} sx={{ bgcolor: "white", width: {md:400,xs:200},  alignItems: "center", display: "flex", flexDirection:"column" , justifyContent: "center" }}>
-                                     <img src={item.image} alt={item.name} width={'100%'} onClick={()=>(navigate.push(`/tube/2?name=${item.name}`))} />
-                                     <Link underline="hover" target="_blank" fontSize={{xs:20,md:25}}  fontStyle={"italic"} href={`/wiki/${item.name}`}>{item.title}</Link>
-                                 </Paper>
- 
-                             </Stack>
+                    <Paper elevation={0} sx={{
+                        p: 3, overflowY: "scroll", scrollbarWidth: 0, maxHeight: 400, overflowX: { xs: "scroll", md: "hidden" }, mr: { md: 0, xs: 0 }, '&::-webkit-scrollbar': {
+                            display: 'none',
+                        }, '-ms-overflow-style': 'none', mb: 2
+                    }}>
+                        <Stack flexDirection={show ? { xs: "row", md: 'column' } : { xs: "column" }} display={"flex"} justifyContent={!show ? { xs: "start", md: 'center' } : "start"} gap={2} maxWidth={{ md: 480, xs: 200 }}>
+                            {filteredImages.map(item => (
+                                <Stack key={item.name}>
+                                    <Paper elevation={0} sx={{ bgcolor: "white", width: { md: 400, xs: 200 }, alignItems: "center", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                                        <img src={item.image} alt={item.name} width={'100%'} onClick={() => navigate.push(`/tube/2?name=${item.name}`)} />
+                                        <Link underline="hover" target="_blank" fontSize={{ xs: 20, md: 25 }} textAlign={'center'} fontStyle={"italic"} href={`/tube/2?name=${item.name}`}>{item.title}</Link>
+                                    </Paper>
+                                </Stack>
                             ))}
-
-                           
-
-
-
-                          
-
                         </Stack>
                     </Paper>
                 </Stack>
