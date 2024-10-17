@@ -5,7 +5,7 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import InputBase from "@mui/material/InputBase";
 import { VerticalAlignBottom } from "@mui/icons-material";
 import TranscriptPage from "./transcript";
@@ -50,6 +50,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 
 
+
 const Player = () =>{
 
 const [lan, setLan] = React.useState("10");
@@ -58,8 +59,11 @@ const [correctAns,setCorrectAns] = React.useState(false);
 const [open, setOpen] = React.useState(false);
 const [articleData, setArticleData] = React.useState<ArticleTypes | null>(null);
 const [waiting, setWaiting] = React.useState(true);
-const {article_name} = useRouter().query
+
 const article = (useRouter().query.name)?.toString()
+const [translatedTranscript,setTranslatedTranscript] = React.useState<string>("")
+ 
+const [translated,settranslated] = React.useState(false)
 React.useEffect(()=>{
   const fetchArticle = async () => {
   
@@ -84,7 +88,42 @@ React.useEffect(()=>{
 if(!articleData) return null
 
 
+
+const handleChanged = async (event: SelectChangeEvent) => {
+  const selectedLang = event.target.value as string;
+  setTanLang(selectedLang);
+
+  // Translate article_name to the selected language
+  try {
+    const targetLanguageMap: Record<string, string> = {
+      "10": "en",  // English
+      "20": "ru",  // Russian
+      "30": "fr",  // French
+      "40": "de",  // German
+      "50": "sw",  // Swahili
+      "60": "es",  // Spanish
+    };
+    const targetLanguage = targetLanguageMap[selectedLang];
+
+    const response = await axios.post('/api/translate', {
+      text: [articleData.transcript],
+      targetLanguage
+    });
+
+    const translatedText = response.data.translatedText;
+    setTranslatedTranscript(translatedText);
+
+
+  } catch (error) {
+    console.error("Translation error:", error);
+  }finally{
+    settranslated(true)
+  }
+};
+
+
 const quizz = articleData.quizzes
+
 
   const handleClose = () => {
     setOpen(false);
@@ -189,14 +228,18 @@ const quizz = articleData.quizzes
         </Select>
                 </FormControl>
                 <FormControl sx={{ m: 1 }} variant="standard">
-        <Select value={tanlang} onChange={(e)=>{setTanLang(e.target.value)}} input={<BootstrapInput />}>
-        <MenuItem value={10}>En</MenuItem>
-        <MenuItem value={20}>Ru</MenuItem>
-        <MenuItem value={30}>Fr</MenuItem>
-        <MenuItem value={40}>De</MenuItem>
-        <MenuItem value={50}>Sw</MenuItem>
-        <MenuItem value={60}>Es</MenuItem>
-        </Select>
+                <Select
+                input={<BootstrapInput />}
+                  value={tanlang}
+                  onChange={handleChanged}
+                >
+                  <MenuItem value={10}>En</MenuItem>
+                  <MenuItem value={20}>Ru</MenuItem>
+                  <MenuItem value={30}>Fr</MenuItem>
+                  <MenuItem value={40}>De</MenuItem>
+                  <MenuItem value={50}>Sw</MenuItem>
+                  <MenuItem value={60}>Es</MenuItem>
+                </Select>
                 </FormControl>
                 </Stack>
                 <Paper elevation={2} sx={{p:2,overflowY:"auto",height:"300px"}}  >
@@ -206,7 +249,7 @@ const quizz = articleData.quizzes
                         <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:20</span> It's like <Tooltip title= "Algebra"><Link href="/directory" underline="none">{"algebra"}</Link></Tooltip>, but instead of using numbers, we use rates of change.</ListItemText>
                         <ListItemText sx={{pb:2}}><span style={{color:"#606060"}}>0:45</span> One important concept in calculus is the <Tooltip title= "Derivative"><Link href="/directory" underline="none">{"derivative"}</Link></Tooltip>.</ListItemText>
                     </List> */}
-                    <TranscriptPage/>
+                    {!translated?articleData.transcript:translatedTranscript}
                 </Paper>
                 <Button href="/transcripteditor" variant="outlined"  sx={{mt:2,backgroundColor:"#eaecf0ff",color:"#202122",borderRadius:0,borderColor:'#a2a9b1',"&:hover":{borderColor:'#a2a9b1',backgroundColor:"#eaecf0ff"}}}>Edit Transcript</Button>
                 </Stack>

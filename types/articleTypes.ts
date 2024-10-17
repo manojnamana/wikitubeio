@@ -34,6 +34,7 @@ export interface Hyperlink {
     article_name: string;
     slug: string;
     description: string;
+    transcript:string;
     article_video_thumbnail: string;
     article_video_url: string;
     hyperlinks: Hyperlink[];
