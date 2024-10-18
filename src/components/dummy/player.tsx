@@ -22,19 +22,31 @@ const Player = () => {
   const router = useRouter();
   const { name } = router.query;
 
+
   // If the URL parameter contains encoded characters, decode it
-  const decodedName = decodeURIComponent(name as string);
+
+  const decodename2 = name as string
 
   // Remove the extra characters, if needed, such as spaces or special characters
-  const article = decodedName.trim().split('&')[0];
-  const videoId = decodedName.trim().split('&')[1];
 
 
+
+  // Split based on '/'
+  const parts = decodename2.split('/');
+  
+  // Extract video_id and article_name
+  const video_id = parts[0];
+  const article_id = parts[1].split('=')[1].trim();
+  
+  console.log("video_id:", video_id);         // Output: "WsQQvHm4lSw"
+  console.log("article_name:", article_id); // Output: "Calculus"
+
+ const article = 'calculus'
 
   React.useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/${article?.toLowerCase()}/`);
+        const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/${article_id.toLowerCase()}/`);
         if (response.status === 200) {
           setArticleData(response.data);
         } else {
@@ -50,7 +62,7 @@ const Player = () => {
     if (article) {
       fetchArticle();
     }
-  }, [article]);
+  }, []);
 
   if (waiting) return <Loading />;
   if (!articleData) return null;
@@ -61,6 +73,9 @@ const Player = () => {
     setOpen(false);
   };
 
+ 
+
+  // If the URL parameter contains encoded characters, decode it
 
 
   const linkWords: Record<string, string> = articleData.hyperlinks.reduce((acc: Record<string, string>, link) => {
@@ -100,9 +115,8 @@ const Player = () => {
 
   return (
     <Stack px={"10%"}>
-
-      <p>{decodedName}</p>
-      <VideoDetailsPage />
+      {/* <p>vid:{videoId}</p> */}
+      <VideoDetailsPage  id={video_id}/>
 
       <Paper elevation={3} sx={{ mt: 2, p: 2, mb: 2 }}>
         <Typography variant="h5" component="div" fontFamily="'Linux Libertine','Georgia','Times','Source Serif Pro',serif" sx={{ py: 1 }}>

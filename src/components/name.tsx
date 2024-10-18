@@ -41,30 +41,21 @@ interface VideoDetailsPageProps {
 
 
 
-const VideoDetailsPage: React.FC = () => {
+const VideoDetailsPage: React.FC <VideoDetailsPageProps> = ({id}) => {
   const [videoDetails, setVideoDetails] = useState<any | null>(null);
   const [lan, setLan] = useState<string>('10');
   const [tanlang, setTanLang] = useState<string>('10');
 
-  // const id ='Kss13U-hvPk';
 
-  
-  const router = useRouter();
-  const { id } = router.query;
 
-  // // If the URL parameter contains encoded characters, decode it
-  // const decodedName = decodeURIComponent(name as string);
 
-  // // Remove the extra characters, if needed, such as spaces or special characters
-
-  // const id = decodedName.trim().split('&')[0];
 
   useEffect(() => {
     const fetchVideoDetails = async () => {
       if (!id) return;
 
       try {
-        const response = await fetch(`/api/video?videoId=WsQQvHm4lSw`);
+        const response = await fetch(`/api/video?videoId=${id}`);
         const data = await response.json();
         setVideoDetails(data);
       } catch (error) {

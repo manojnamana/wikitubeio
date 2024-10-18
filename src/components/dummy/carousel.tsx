@@ -65,7 +65,7 @@ interface CarouselItemProps {
 
 const CarouselItem: React.FC<CarouselItemProps> = ({ item, hrefLinkWord }) => {
   return (
-    <Link href={`/tube/${item.id}?name=${item.id}`} passHref>
+    <Link href={`/tube/${item.id}?name=${item.id}/article_name= ${hrefLinkWord}`} passHref>
       <Stack>
         <img
           src={item.image}
