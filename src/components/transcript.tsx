@@ -1,55 +1,56 @@
+// @ts-nocheck
 
-
+import { ArticleTypes } from "@/types/articleTypes";
 import { Link, Stack, Typography } from "@mui/material";
+import axios from "axios";
 import { useState, useEffect } from "react";
 
 type Transcript = {
   text: string;
   start?: number; // Marking offset as optional
-  dur?: number;
+  duration?: number;
 }[];
 
-const TranscriptPage: React.FC = () => {
-  const [videoLink, setVideoLink] = useState<string>("https://www.youtube.com/watch?v=Zp3Q57EJO4E&list=PLA3TZC6wAne_I_gH34YsZ2xSm9SBER27j&index=2"); // Pre-fill with a default link if needed
-  const [transcript, setTranscript] = useState<Transcript | null>(null);
+interface ArticleType {
+  article: string;
+}
+
+const TranscriptPage: React.FC<ArticleType> = ({ article }) => {
+  const [transcript, setTranscript] = useState<ArticleTypes | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [subtitlesData, setSubtitlesData] = useState([])
 
   useEffect(() => {
     const fetchTranscript = async () => {
-      if (!videoLink) return;
-
-      const videoId = videoLink.split("v=")[1]?.split("&")[0];
-
-      if (!videoId) {
-        setError("Invalid YouTube link.");
-        return;
-      }
-
-      setError(null);
+      if (!article) return;
 
       try {
-        console.log(`Fetching transcript for video ID: ${videoId}`);
-        const res = await fetch(`/api/hello/?videoId=${videoId}>`);
-        const data = await res.json();
-        // console.log(data.captions)
+        const res = await axios.get(
+          `https://wikitube-new.vercel.app/api/articles/${article.toLowerCase()}/`
+        );
+        const data = res.data;
+        setTranscript(data?.subtitles)
 
-        if (data.captions) {
-          setTranscript(data.captions);
-        } else {
-          setTranscript(null);
-          setError("No transcript available for this video.");
-        }
-      } catch (err:any) {
+        const subtitleData = data?.subtitles
+        const subtitles = JSON.parse(subtitleData);
+        setSubtitlesData(subtitles)
+                
+        
+      } catch (err: any) {
         console.error(`Error fetching transcript: ${err.message}`);
         setTranscript(null);
-        setError("Error fetching transcript.");
+       
       }
     };
 
     fetchTranscript();
-  }, [videoLink]);
+  }, []);
 
- 
+
+       
+
+
+  
 
   const formatTime = (seconds: number | undefined) => {
     if (typeof seconds !== "number" || isNaN(seconds)) {
@@ -62,18 +63,25 @@ const TranscriptPage: React.FC = () => {
 
   return (
     <>
-      {error && <Typography color="error">{error}</Typography>}
-
-      {transcript && (
         <Stack style={{ whiteSpace: "pre-wrap" }}>
-          {transcript.map((entry, index) => (
-            <Stack flexDirection={"row"} key={index} style={{ marginBottom: "10px" }}>
-              <Link href="#" underline="none">{formatTime(entry.start)}</Link>
+          {subtitlesData.map((entry, index) => (
+            <Stack
+              flexDirection={"row"}
+              key={index}
+              style={{ marginBottom: "10px" }}
+            >
+              <Link
+                href="#"
+                underline="none"
+                aria-label={`Jump to ${formatTime(entry.start)}`}
+              >
+                {formatTime(entry.start)}
+              </Link>
               <Typography sx={{ pl: 1 }}>{entry.text}</Typography>
             </Stack>
           ))}
         </Stack>
-      )}
+    
     </>
   );
 };

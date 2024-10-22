@@ -13,7 +13,11 @@ interface Item {
   image: string;
 }
 
-const CarouselComponent: React.FC = () => {
+interface CarouselComponentProps {
+  hrefLinkWord: string;
+}
+
+const CarouselComponent: React.FC<CarouselComponentProps> = ({ hrefLinkWord }) => {
   const [items, setItems] = useState<Item[]>([]);
   const [waiting, setWaiting] = useState(true);
   const {article_name} = useRouter().query
@@ -21,8 +25,7 @@ const CarouselComponent: React.FC = () => {
   useEffect(() => {
     const fetching = async () => {
       try {
-        const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/${article_name}/`);
-        console.log(response.data)
+        const response = await axios.get(`https://wikitube-new.vercel.app/api/articles/${hrefLinkWord.toLowerCase()}/`);
         if (response.status === 200) {
           
           
@@ -32,22 +35,7 @@ const CarouselComponent: React.FC = () => {
               name:response.data.article_name,
               image: response.data.article_video_thumbnail,
             },
-            // {
-            //   name: 'Item 2',
-            //   image: '/static/images/video-placeholder.jpg',
-            // },
-            // {
-            //   name: 'Item 3',
-            //   image: '/static/images/video-placeholder.jpg',
-            // },
-            // {
-            //   name: 'Item 4',
-            //   image: '/static/images/video-placeholder.jpg',
-            // },
-            // {
-            //   name: 'Item 5',
-            //   image: '/static/images/video-placeholder.jpg',
-            // },
+            
           ];
           setItems(fetchedItems);
         } else {

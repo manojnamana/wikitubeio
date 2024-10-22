@@ -89,7 +89,7 @@ const Register = () => {
     } else {
       setwaiting(true);
       try {
-        const response = await axios.post('https://wikitubeio-backend.vercel.app/api/register/', {
+        const response = await axios.post('https://wikitube-new.vercel.app/api/register/', {
           first_name: firstName,
           last_name: lastName,
           email,
@@ -328,7 +328,7 @@ const Register = () => {
               </Alert>
             </Snackbar>
 
-            <Typography mt={2} mb={1}>Already have an account? <Link href="/login" underline='none'>Sign in</Link></Typography>
+            <Typography mt={2} mb={1}>Already have an account? <Link href="/" underline='none'>Sign in</Link></Typography>
           </Paper>
         </Grid>
       </Grid>

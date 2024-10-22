@@ -37,6 +37,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 
 interface VideoDetailsPageProps {
   id: any;
+
 }
 
 
@@ -74,7 +75,7 @@ const VideoDetailsPage: React.FC <VideoDetailsPageProps> = ({id}) => {
     <div>
       {videoDetails && (
         <Grid container mt={5}>
-          <Grid item md={7}>
+          <Grid xs={12} md={7}>
             <Stack>
               {/* Video Embed */}
               <Stack
@@ -113,8 +114,15 @@ const VideoDetailsPage: React.FC <VideoDetailsPageProps> = ({id}) => {
                 </Typography>
               </Stack>
 
-              <Paper sx={{ my: 2 }}>
-                <Typography p={2}>{videoDetails.description}</Typography>
+              <Paper sx={{ my: 2, overflowY: 'auto', height: '300px','&::-webkit-scrollbar': {
+                            display: 'none',
+                        }, '-ms-overflow-style': 'none', }}>
+                <Typography p={2}sx={{
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'wrap',
+                  fontSize: 15,
+
+                }}>{videoDetails.description}</Typography>
               </Paper>
 
               <Button
@@ -163,7 +171,7 @@ const VideoDetailsPage: React.FC <VideoDetailsPageProps> = ({id}) => {
 
               {/* Transcript Page */}
               <Paper elevation={2} sx={{ p: 2, overflowY: 'auto', height: '300px' }}>
-                <TranscriptPage />
+                {/* <TranscriptPage url={`https://www.youtube.com/watch?v=${id}`}/> */}
               </Paper>
 
               <Button

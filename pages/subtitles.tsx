@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const Home: React.FC = () => {
   const [videoUrl, setVideoUrl] = useState('');
-  const [captions, setCaptions] = useState<string[]>([]);
+  const [captions, setCaptions] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const fetchCaptions = async () => {
@@ -32,8 +32,8 @@ const Home: React.FC = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       
       <ul>
-        {captions.map((caption:any, index) => (
-          <li key={index}>{caption.start} - {caption.text}</li>
+        {captions.map((caption, index) => (
+          <li key={index}>{caption.snippet.language} - {caption.snippet.name}</li>
         ))}
       </ul>
     </div>

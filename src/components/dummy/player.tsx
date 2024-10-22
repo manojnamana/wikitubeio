@@ -22,16 +22,8 @@ const Player = () => {
   const router = useRouter();
   const { name } = router.query;
 
-
-  // If the URL parameter contains encoded characters, decode it
-
   const decodename2 = name as string
 
-  // Remove the extra characters, if needed, such as spaces or special characters
-
-
-
-  // Split based on '/'
   const parts = decodename2.split('/');
   
   // Extract video_id and article_name
@@ -41,12 +33,11 @@ const Player = () => {
   console.log("video_id:", video_id);         // Output: "WsQQvHm4lSw"
   console.log("article_name:", article_id); // Output: "Calculus"
 
- const article = 'calculus'
 
   React.useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/${article_id.toLowerCase()}/`);
+        const response = await axios.get(`https://wikitube-new.vercel.app/api/articles/${article_id.toLowerCase()}/`);
         if (response.status === 200) {
           setArticleData(response.data);
         } else {
@@ -59,7 +50,7 @@ const Player = () => {
       }
     };
 
-    if (article) {
+    if (article_id) {
       fetchArticle();
     }
   }, []);

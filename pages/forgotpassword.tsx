@@ -31,7 +31,7 @@ const ForgotPassword = () => {
       // setTimeout(() => navigate("/"), 3000); 
      
       try{
-        const response =  await axios.post('https://wikitubeio-backend.vercel.app/api/password-reset/', { email });
+        const response =  await axios.post('https://wikitube-new.vercel.app/api/password-reset/', { email });
         if (response.status === 200) {
           setSnackbarMessage('Reset Password Link Sent To Your Email');
           setOpenSnackbar(true);

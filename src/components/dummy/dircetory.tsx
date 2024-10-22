@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import Loading from './loading';
-import CarouselComponent from './carousel';
+import CarouselComponent from './dummy/carousel';
 
 const Directory = ({
   article_name,

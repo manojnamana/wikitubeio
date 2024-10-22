@@ -11,11 +11,10 @@ export const fetchYoutubeVideos = async (query: string) => {
       q: query,
       type: 'video',
       maxResults: 3,
+      videoCaption: 'closedCaption',  // Filter for caption-available videos
       key: API_KEY,
     },
   });
-
-
 
   // Map the response to return video IDs along with other info
   return response.data.items.map((item: any) => ({

@@ -18,7 +18,7 @@ const Article = () => {
     const fetchArticle = async () => {
       if(!article_name) return null
       try {
-        const response = await axios.get(`https://wikitubeio-backend.vercel.app/api/articles/${article_name}/`);
+        const response = await axios.get(`https://wikitube-new.vercel.app/api/articles/${article_name}/`);
         // console.log(response.data)
         if (response.status === 200) {
           setArticleData(response.data)
@@ -44,8 +44,6 @@ const Article = () => {
     <Directory 
       article_name={articleData.article_name}
       description={articleData.description}
-      article_video_thumbnail={articleData.article_video_thumbnail}
-      article_video_url={articleData.article_video_url}
       hyperlinks={articleData.hyperlinks} 
       quizzes={articleData.quizzes} 
       content={articleData.content} 

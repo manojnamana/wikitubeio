@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { Paper, Stack } from '@mui/material';
 import Link from 'next/link';
-import Loading from './loading';
+import Loading from '../loading';
 import { useRouter } from 'next/router';
 
 interface Item {

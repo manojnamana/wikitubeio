@@ -26,6 +26,11 @@ export interface Hyperlink {
     channel_name:string;
 
   }
+
+  export interface Subtitles{
+    transcriptData: { text: string; start: number;duration: number; }[];
+
+  }
   
   export interface ArticleTypes {
     userperformance: number;
@@ -34,7 +39,7 @@ export interface Hyperlink {
     article_name: string;
     slug: string;
     description: string;
-    transcript:string;
+    subtitles: Subtitles[];
     article_video_thumbnail: string;
     article_video_url: string;
     hyperlinks: Hyperlink[];
