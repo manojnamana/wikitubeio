@@ -1,4 +1,4 @@
-import Player from '../../src/components/player';
+import Player from '../../src/components/dummy/player';
 
 import React from 'react'
 

@@ -31,13 +31,13 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
 
 // Dummy data representing the images with titles and names
 const imagesWithText = [
-  { id:"engineering", name: 'calculus', title: "Calculus at a Fifth Grade Level", image: "/static/images/calculus.jpg" },
-  {id:"engineering", name: 'geometry', title: "The Organic Chemistry Tuto", image: "/static/images/geometry.jpg" },
-  { id:"computation",name: 'computation', title: "Why study theory of computation?", image: "/static/images/computation.jpg" },
-  {id:"energy", name: 'energy', title: "What Are Sources of Energy?", image: "/static/images/energy.jpg" },
-  {id:"robotics", name: 'robotics', title: "What is ROBOTICS", image: "/static/images/robotics.jpg" },
-  {id:"technology", name: 'technology', title: "Information Technology", image: "/static/images/Technology.jpg" },
-  {id:"random", name: 'random', title: "Importance of Sports in Education", image: "/static/images/Random.jpg" },
+  { id:"engineering", videoId:'Zp3Q57EJO4E', name: 'calculus', title: "Calculus at a Fifth Grade Level", image: "/static/images/calculus.jpg" },
+  {id:"engineering",videoId:'302eJ3TzJQU', name: 'geometry', title: "The Organic Chemistry Tuto", image: "/static/images/geometry.jpg" },
+  { id:"computation",videoId:'',name: 'computation', title: "Why study theory of computation?", image: "/static/images/computation.jpg" },
+  {id:"energy",videoId:'', name: 'energy', title: "What Are Sources of Energy?", image: "/static/images/energy.jpg" },
+  {id:"robotics",videoId:'', name: 'robotics', title: "What is ROBOTICS", image: "/static/images/robotics.jpg" },
+  {id:"technology",videoId:'', name: 'technology', title: "Information Technology", image: "/static/images/Technology.jpg" },
+  {id:"random", videoId:'',name: 'random', title: "Importance of Sports in Education", image: "/static/images/Random.jpg" },
 ];
 
 const Creater = () => {
@@ -128,8 +128,9 @@ const Creater = () => {
                             {filteredImages.map(item => (
                                 <Stack key={item.name}>
                                     <Paper elevation={0} sx={{ bgcolor: "white", width: { md: 400, xs: 200 }, alignItems: "center", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                        <img src={item.image} alt={item.name} width={'100%'} onClick={() => navigate.push(`/tube/2?name=${item.name}`)} />
-                                        <Link underline="hover" target="_blank" fontSize={{ xs: 20, md: 25 }} textAlign={'center'} fontStyle={"italic"} href={`/tube/2?name=${item.name}`}>{item.title}</Link>
+                                        <img src={item.image} alt={item.name} width={'100%'} onClick={() => navigate.push(`/tube/${item.id}?name=${item.videoId}/article_name= ${item.name}`)} />
+                                        <Link underline="hover" target="_blank" fontSize={{ xs: 20, md: 25 }} textAlign={'center'} fontStyle={"italic"} href={`/tube/${item.id}?name=${item.videoId}/article_name= ${item.name}`}>{item.title}</Link>
+                                        {/* href={`/tube/${item.id}?name=${item.id}/article_name= ${hrefLinkWord}`} */}
                                     </Paper>
                                 </Stack>
                             ))}

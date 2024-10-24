@@ -325,7 +325,20 @@ const Player = () => {
   </Stack>
 </Paper>
 
-
+<Button
+                href="/transcripteditor"
+                variant="outlined"
+                sx={{
+                  mt: 2,
+                  color: '#202122', borderRadius: 0 ,backgroundColor: "#eaecf0ff",
+                 
+                  borderRadius: 0,
+                  borderColor: "#a2a9b1",
+                  "&:hover": { borderColor: "#a2a9b1", backgroundColor: "#eaecf0ff" },
+                }}
+              >
+                Edit Transcript
+              </Button>
             
           </Stack>
         </Grid>

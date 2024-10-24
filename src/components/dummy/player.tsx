@@ -30,8 +30,8 @@ const Player = () => {
   const video_id = parts[0];
   const article_id = parts[1].split('=')[1].trim();
   
-  console.log("video_id:", video_id);         // Output: "WsQQvHm4lSw"
-  console.log("article_name:", article_id); // Output: "Calculus"
+  // console.log("video_id:", video_id);         // Output: "WsQQvHm4lSw"
+  // console.log("article_name:", article_id); // Output: "Calculus"
 
 
   React.useEffect(() => {
@@ -54,6 +54,21 @@ const Player = () => {
       fetchArticle();
     }
   }, []);
+
+  // React.useEffect(() => {
+  //   const subtitlesFetching = async () => {
+  //     try {
+  //       const response = await axios.post('https://wikitube-439304.el.r.appspot.com/api/generate-subtitles/', {
+  //         url: `https://www.youtube.com/watch?v=${video_id}`
+  //       });
+  //       // Handle response data if needed
+  //     } catch (error: any) {
+  //       console.error(`Error: ${error.message}`);
+  //     }
+  //   };
+  
+  //   subtitlesFetching();
+  // }, [video_id]);
 
   if (waiting) return <Loading />;
   if (!articleData) return null;

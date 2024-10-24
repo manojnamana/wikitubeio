@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import Loading from './loading';
-import CarouselComponent from './carousel';
+import CarouselComponent from './dummy/carousel';
 
 const Directory = ({
   article_name,
@@ -115,9 +115,9 @@ const Directory = ({
           {visibleCarousels[word] ? '[-]' : '[+]'}
         </IconButton>
       </Tooltip>
-      <Link href={linkWords[word]} underline="none">
-        {word}
-      </Link>
+      <Link href={`/wiki/${word.toLowerCase()}`} underline="none">
+          {word}
+        </Link>
 
       {visibleCarousels[word] && (
         <Stack maxWidth={'100%'}>

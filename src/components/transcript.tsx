@@ -12,26 +12,30 @@ type Transcript = {
 }[];
 
 interface ArticleType {
-  article: string;
+  url: string;
 }
 
-const TranscriptPage: React.FC<ArticleType> = ({ article }) => {
+const TranscriptPage: React.FC<ArticleType> = ({ url }) => {
   const [transcript, setTranscript] = useState<ArticleTypes | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [subtitlesData, setSubtitlesData] = useState([])
 
+
+  
+
   useEffect(() => {
     const fetchTranscript = async () => {
-      if (!article) return;
+      if (!url) return;
 
       try {
+        console.log(url)
         const res = await axios.get(
-          `https://wikitube-new.vercel.app/api/articles/${article.toLowerCase()}/`
+          `https://wikitube-439304.el.r.appspot.com/api/transcript/?url=${url}`
         );
         const data = res.data;
-        setTranscript(data?.subtitles)
+        setTranscript(data?.transcript)
 
-        const subtitleData = data?.subtitles
+        const subtitleData = data?.transcript
         const subtitles = JSON.parse(subtitleData);
         setSubtitlesData(subtitles)
                 
@@ -44,7 +48,8 @@ const TranscriptPage: React.FC<ArticleType> = ({ article }) => {
     };
 
     fetchTranscript();
-  }, []);
+  }, [url]);
+
 
 
        
