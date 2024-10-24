@@ -1,40 +1,30 @@
-/* eslint-disable react/no-unescaped-entities */
-
 import { Alert, Avatar, Button, Grid, Link, List, ListItemText, Paper, Snackbar, Stack, Tooltip, Typography } from "@mui/material";
 import * as React from "react";
-
 import axios from "axios";
 import { ArticleTypes } from "@/types/articleTypes";
 import Loading from "../loading";
 import { useRouter } from "next/router";
-
 import VideoDetailsPage from "../name";
 
-
-
 const Player = () => {
-  
   const [correctAns, setCorrectAns] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [articleData, setArticleData] = React.useState<ArticleTypes | null>(null);
   const [waiting, setWaiting] = React.useState(true);
-  
+
   const router = useRouter();
   const { name } = router.query;
 
-  const decodename2 = name as string
-
-  const parts = decodename2.split('/');
-  
-  // Extract video_id and article_name
-  const video_id = parts[0];
-  const article_id = parts[1].split('=')[1].trim();
-  
-  // console.log("video_id:", video_id);         // Output: "WsQQvHm4lSw"
-  // console.log("article_name:", article_id); // Output: "Calculus"
-
-
   React.useEffect(() => {
+    if (!router.isReady || !name) return;
+
+    const decodename2 = name as string;
+    const parts = decodename2.split('/');
+
+    // Safely extract video_id and article_id
+    const video_id = parts?.[0] || '';
+    const article_id = parts?.[1]?.split('=')[1]?.trim() || '';
+
     const fetchArticle = async () => {
       try {
         const response = await axios.get(`https://wikitube-new.vercel.app/api/articles/${article_id.toLowerCase()}/`);
@@ -53,22 +43,7 @@ const Player = () => {
     if (article_id) {
       fetchArticle();
     }
-  }, []);
-
-  // React.useEffect(() => {
-  //   const subtitlesFetching = async () => {
-  //     try {
-  //       const response = await axios.post('https://wikitube-439304.el.r.appspot.com/api/generate-subtitles/', {
-  //         url: `https://www.youtube.com/watch?v=${video_id}`
-  //       });
-  //       // Handle response data if needed
-  //     } catch (error: any) {
-  //       console.error(`Error: ${error.message}`);
-  //     }
-  //   };
-  
-  //   subtitlesFetching();
-  // }, [video_id]);
+  }, [router.isReady, name]);
 
   if (waiting) return <Loading />;
   if (!articleData) return null;
@@ -79,17 +54,14 @@ const Player = () => {
     setOpen(false);
   };
 
- 
+  const linkWords: Record<string, string> = articleData.hyperlinks.reduce(
+    (acc: Record<string, string>, link) => {
+      acc[link.hyper_link_word] = link.hyper_link_word_url;
+      return acc;
+    },
+    {}
+  );
 
-  // If the URL parameter contains encoded characters, decode it
-
-
-  const linkWords: Record<string, string> = articleData.hyperlinks.reduce((acc: Record<string, string>, link) => {
-    acc[link.hyper_link_word] = link.hyper_link_word_url;
-    return acc;
-  }, {});
-
-  // Function to create a link with tooltip
   const createLinkWithButton = (word: string, url: string) => (
     <span key={word + Math.random()}>
       <Tooltip title={word}>
@@ -100,12 +72,11 @@ const Player = () => {
     </span>
   );
 
-  // Function to render description with links
   const renderDescription = (text: string) => {
     const words = text.split(' ');
 
     return words.map((word, index) => {
-      const cleanWord = word.replace(/[\.\,]/g, ''); // Remove punctuation for accurate matching
+      const cleanWord = word.replace(/[\.\,]/g, '');
       if (linkWords[cleanWord]) {
         return (
           <React.Fragment key={index}>
@@ -119,13 +90,22 @@ const Player = () => {
 
   const splittingDescription = articleData.description.split('\r\n');
 
+  const decodename2 = name as string;
+  const parts = decodename2.split('/');
+  const video_id = parts?.[0] || '';  // Ensure video_id is available
+
   return (
     <Stack px={"10%"}>
-      {/* <p>vid:{videoId}</p> */}
-      <VideoDetailsPage  id={video_id}/>
+      {/* Only render VideoDetailsPage if video_id exists */}
+      {video_id && <VideoDetailsPage id={video_id} />}
 
       <Paper elevation={3} sx={{ mt: 2, p: 2, mb: 2 }}>
-        <Typography variant="h5" component="div" fontFamily="'Linux Libertine','Georgia','Times','Source Serif Pro',serif" sx={{ py: 1 }}>
+        <Typography
+          variant="h5"
+          component="div"
+          fontFamily="'Linux Libertine','Georgia','Times','Source Serif Pro',serif"
+          sx={{ py: 1 }}
+        >
           {articleData.article_name}
         </Typography>
         <hr />
@@ -137,7 +117,12 @@ const Player = () => {
       </Paper>
 
       <Paper elevation={3} sx={{ mt: 2, p: 2, mb: 2 }}>
-        <Typography variant="h5" component="div" fontFamily="'Linux Libertine','Georgia','Times','Source Serif Pro',serif" sx={{ py: 1 }}>
+        <Typography
+          variant="h5"
+          component="div"
+          fontFamily="'Linux Libertine','Georgia','Times','Source Serif Pro',serif"
+          sx={{ py: 1 }}
+        >
           {articleData.article_name} Quiz
         </Typography>
         <hr />
@@ -157,7 +142,10 @@ const Player = () => {
                   color: "#202122",
                   borderRadius: 0,
                   borderColor: "#a2a9b1",
-                  "&:hover": { borderColor: "#a2a9b1", backgroundColor: "#eaecf0ff" },
+                  "&:hover": {
+                    borderColor: "#a2a9b1",
+                    backgroundColor: "#eaecf0ff",
+                  },
                 }}
                 onClick={() => {
                   setCorrectAns(quiz.correct_options === ["A", "B", "C"][idx]);
@@ -171,13 +159,28 @@ const Player = () => {
         ))}
       </Paper>
 
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
         {correctAns ? (
-          <Alert onClose={handleClose} severity="success" variant="filled" sx={{ width: "100%" }}>
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
             Correct Answer
           </Alert>
         ) : (
-          <Alert onClose={handleClose} severity="error" variant="filled" sx={{ width: "100%" }}>
+          <Alert
+            onClose={handleClose}
+            severity="error"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
             Wrong Answer!
           </Alert>
         )}
