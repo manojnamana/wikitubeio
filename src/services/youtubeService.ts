@@ -21,7 +21,8 @@ export const fetchYoutubeVideos = async (query: string) => {
     videoId: item.id.videoId,  // Video ID
     title: item.snippet.title,  // Video Title
     description: item.snippet.description,  // Video Description
-    thumbnail: item.snippet.thumbnails.default.url,  // Thumbnail URL
+    thumbnail: `https://img.youtube.com/vi/${item.id.videoId}/maxresdefault.jpg`,
+   
     channelName: item.snippet.channelTitle,  // Channel Name
     embedUrl: `https://www.youtube.com/embed/${item.id.videoId}`  // Embed URL
   }));
