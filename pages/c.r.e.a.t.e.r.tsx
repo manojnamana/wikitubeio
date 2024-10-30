@@ -1,77 +1,192 @@
-import { Button, colors, Fab, IconButton, Link, Paper, Stack, Typography } from "@mui/material";
-import * as React from 'react';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import { Add, East, KeyboardDoubleArrowRight, MoreVert, PlayCircle, RampRight, Settings, West } from "@mui/icons-material";
-import axios from "axios";
-import { ArticleTypes } from "@/types/articleTypes";
-import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
-import Box from '@mui/material/Box';
-import Loading from "@/src/components/loading";
-import { useRouter } from "next/router";
+// @ts-nocheck
 
-// Define the LinearProgressWithLabel component for progress bar
-function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { Button, Paper, Stack, Typography, IconButton, Radio, RadioGroup, FormControlLabel, FormControl, Box, LinearProgress, Link, Snackbar, Alert } from '@mui/material';
+import { KeyboardDoubleArrowRight, West, East } from '@mui/icons-material';
+import axios from 'axios';
+import { useRouter } from "next/router";
+import { ArticleTypes } from '@/types/articleTypes';
+import Loading from '@/src/components/loading';
+import Cookies from 'js-cookie';
+
+function LinearProgressWithLabel(props) {
     return (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Box sx={{ width: '200%', mr: 1 }}>
+        <Box sx={{ width: '100%', mr: 1 }}>
           <LinearProgress color="warning" variant="determinate" {...props} />
         </Box>
         <Box sx={{ minWidth: 35 }}>
-          <Typography
-            variant="body2"
-            sx={{ color: 'text.secondary' }}
-          >{`${Math.round(props.value)}%`}</Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>{`${Math.round(props.value)}%`}</Typography>
         </Box>
       </Box>
     );
 }
 
-// Dummy data representing the images with titles and names
-const imagesWithText = [
-  { id:"engineering", videoId:'Zp3Q57EJO4E', name: 'calculus', title: "Calculus at a Fifth Grade Level", image: "/static/images/calculus.jpg" },
-  {id:"engineering",videoId:'302eJ3TzJQU', name: 'geometry', title: "The Organic Chemistry Tuto", image: "/static/images/geometry.jpg" },
-  { id:"computation",videoId:'',name: 'computation', title: "Why study theory of computation?", image: "/static/images/computation.jpg" },
-  {id:"energy",videoId:'', name: 'energy', title: "What Are Sources of Energy?", image: "/static/images/energy.jpg" },
-  {id:"robotics",videoId:'', name: 'robotics', title: "What is ROBOTICS", image: "/static/images/robotics.jpg" },
-  {id:"technology",videoId:'', name: 'technology', title: "Information Technology", image: "/static/images/Technology.jpg" },
-  {id:"random", videoId:'',name: 'random', title: "Importance of Sports in Education", image: "/static/images/Random.jpg" },
-];
-
 const Creater = () => {
-    const navigate = useRouter();
-    const [value, setValue] = React.useState('Engineering'); // Default value set to 'computation'
-    const [courseLis, setCourseLis] = React.useState<ArticleTypes[] | null>(null); 
-    const [waiting, setWaiting] = React.useState(true);
-    const [show, setShow] = React.useState(false);
+    const router = useRouter();
+    const [value, setValue] = useState<string>('Engineering');
+    const [courseLis, setCourseLis] = useState<ArticleTypes[] | null>(null);
+    const [videos, setVideos] = useState<{ id: string, title: string, thumbnail: string }[]>([]);
+    const [waiting, setWaiting] = useState(true);
+    const [show, setShow] = useState(false);
+    const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+    const [watchedVideoIds, setWatchedVideoIds] = useState<string[]>([]);
+    const [userId,setUserId]= useState('')
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = React.useState('');
+    const [openSnackbar2, setOpenSnackbar2] = useState(false);
+    const [snackbarMessage2, setSnackbarMessage2] = React.useState('');
 
-    // Fetch the course list on component mount
-    React.useEffect(() => {
-        const fetching = async () => {
+    const bearer_token = (Cookies.get('access_token'))
+
+    useEffect(()=>{
+
+        const gettinUserId = async()=>{
+
+               try{
+           const getID = await axios.get('https://wikitube-new.vercel.app/api/get-user-id/',{
+             headers: {
+                     Authorization: `Bearer ${bearer_token}`
+                 }
+            })
+            if (getID.status===200){
+            setUserId(getID.data.user_id )
+           
+            // console.log(getID.data.user_id)
+           }
+    
+        }
+        catch(err){
+            console.error('error')
+            
+        }
+
+        }
+
+        gettinUserId()
+
+    },[])
+
+    
+    useEffect(() => {
+        const fetchCourses = async () => {
             try {
-                const response = await axios.get('https://wikitubeio-backend.vercel.app/api/courses/');
-                let data = response.data;
-                data = data.sort((a: { course_id: number }, b: { course_id: number }) => a.course_id - b.course_id);
-
-                setCourseLis(data);
+                const response = await axios.get('https://wikitube-new.vercel.app/api/courses/');
+                const sortedData = response.data.sort((a, b) => a.course_id - b.course_id);
+                setCourseLis(sortedData);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             } finally {
                 setWaiting(false);
             }
         };
-        fetching();
+        fetchCourses();
     }, []);
 
-    // Handle RadioGroup value change
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        const fetchVideos = async () => {
+            const selectedCourse = courseLis?.find(course => course.course_name === value);
+            if (!selectedCourse) return;
+
+            const videoPromises = selectedCourse.articles.split(';').map(async (article) => {
+                try {
+                    const response = await axios.get(`/api/youtube?query=${article}`);
+                    return response.data;
+                } catch (error) {
+                    console.error('Error fetching video data:', error);
+                }
+            });
+
+            const videoData = await Promise.all(videoPromises);
+
+            
+            const flattenedVideos = videoData.flat().map(data => ({
+                id: data.videoId,
+                title: data.title,
+                thumbnail: data.thumbnail,
+                
+            }));
+            setVideos(flattenedVideos);
+        };
+        fetchVideos();
+    }, [value, courseLis]);
+
+    
+
+
+    const handleChange = (event) => {
         setValue(event.target.value);
     };
 
-    // Filter the imagesWithText array based on the selected course
-    const filteredImages = imagesWithText.filter(item => item.id === value.toLowerCase());
+
+    // Function to handle selecting a video
+const handleSelectVideo = (videoId: string) => {
+    setSelectedVideo(videoId);
+};
+
+
+// Function to handle adding the selected video to watched list
+// Function to handle adding the selected video to watched list
+const handleAddToWatched = async () => {
+    if (!selectedVideo || watchedVideoIds.includes(selectedVideo)) return;
+
+    try {
+        const updatedWatchedVideos = [...watchedVideoIds, selectedVideo];
+
+
+        const response = await axios.put(`https://wikitube-new.vercel.app/api/user-performance/1/`, {
+            user: userId, // Replace with dynamic user ID
+            course: 5, // Replace with dynamic course ID
+            watched_video_ids_readonly: updatedWatchedVideos,
+            progress:100 
+        });
+
+        setWatchedVideoIds(updatedWatchedVideos); // Update local state
+        console.log(response.data)
+        setOpenSnackbar(true)
+        setSnackbarMessage('Video added to Database');
+    } catch (error) {
+        setOpenSnackbar(true)
+        setSnackbarMessage('Error adding video to database');
+        console.error("Error adding video to database:", error);
+    }
+};
+
+// Function to handle deleting the selected video from watched list
+// Function to handle deleting the selected video from watched list
+const handleDeleteFromWatched = async () => {
+    
+
+    try {
+        const response = await axios.post(`https://wikitube-new.vercel.app/api/user-performance/1/delete-watched-ids/`, {
+            watched_video_ids: [selectedVideo],
+        });
+
+        if (response.status === 200) {
+            // Update the `watchedVideoIds` state
+            const updatedWatchedVideos = watchedVideoIds.filter(id => id !== selectedVideo);
+            setWatchedVideoIds(updatedWatchedVideos);
+
+            // Update the `videos` state to remove the deleted video
+            const updatedVideos = videos.filter(video => video.id !== selectedVideo);
+            setVideos(updatedVideos);
+
+            console.log(response.data); // Log the response data
+            setOpenSnackbar2(true)
+            setSnackbarMessage2('Video removed from Database');
+        }
+    } catch (error) {
+        console.error("Error deleting video from database:", error);
+        setOpenSnackbar2(true)
+            setSnackbarMessage2('Error deleting video from database');
+    }
+};
+
+const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+    setOpenSnackbar2(false);
+  };
 
     if (waiting) return <Loading />;
     if (!courseLis) return null;
@@ -79,77 +194,110 @@ const Creater = () => {
     return (
         <Stack sx={{ display: "flex", flexDirection: 'column', alignItems: 'center' }}>
             <Paper elevation={3} sx={{ my: 3, width: { md: "70%" }, p: 3 }}>
-                <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} alignItems={"center"} justifyContent={"space-between"}>
-                    <Stack display={"flex"} flexDirection={"row"} gap={2}>
-                        {show
-                            ? <IconButton onClick={() => setShow(false)}><KeyboardDoubleArrowRight /></IconButton>
-                            : <IconButton onClick={() => setShow(true)}><KeyboardDoubleArrowRight /></IconButton>}
-                        <Typography fontSize={25} fontWeight={"bold"} py={2}>C.R.E.A.T.E.R.</Typography>
+                <Stack display="flex" flexDirection={{ md: "row", xs: 'column' }} alignItems="center" justifyContent="space-between">
+                    <Stack display="flex" flexDirection="row" gap={2}>
+                        <IconButton onClick={() => setShow(!show)}><KeyboardDoubleArrowRight /></IconButton>
+                        <Typography fontSize={25} fontWeight="bold">C.R.E.A.T.E.R.</Typography>
                     </Stack>
 
-                    <Stack display={"flex"} flexDirection={"row"} gap={2}>
+                    <Stack display="flex" flexDirection="row" gap={2}>
                         <Button variant="contained" style={{ borderRadius: 50 }} color="success">Go!</Button>
                         <Button variant="contained" style={{ borderRadius: 50 }} color="secondary">Repeat?</Button>
                         <Button variant="contained" style={{ borderRadius: 50 }} color="primary">𝕏</Button>
                     </Stack>
                 </Stack>
 
-                <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }}  justifyContent={show ? 'space-between' : 'center'}>
-                    {show && <Stack>
-                        <FormControl>
-                            <RadioGroup
-                                aria-labelledby="demo-controlled-radio-buttons-group"
-                                name="controlled-radio-buttons-group"
-                                value={value}
-                                onChange={handleChange}
-                            >
-                                {courseLis.map((course, index) => (
-                                    <React.Fragment key={index}>
-                                        <FormControlLabel
-                                            value={course.course_name as unknown as string} // Ensuring it's a string
-                                            control={<Radio />}
-                                            label={course.course_name as unknown as string} // Ensure label is a string
-                                        />
-                                        <Box sx={{ width: { xs: "100%", md: "200%" } }}>
-                                            <LinearProgressWithLabel sx={{ borderRadius: 50, p: 1 }} value={1} />
-                                        </Box>
-                                    </React.Fragment>
-                                ))}
-                            </RadioGroup>
-                        </FormControl>
-                    </Stack>}
+                <Stack display="flex" flexDirection={{ md: "row", xs: 'column' }} marginTop={2} justifyContent={show ? 'space-between' : 'center'}>
+                    {show && (
+                        <Stack>
+                            <FormControl>
+                                <RadioGroup
+                                    aria-labelledby="demo-controlled-radio-buttons-group"
+                                    name="controlled-radio-buttons-group"
+                                    value={value}
+                                    onChange={handleChange}
+                                >
+                                    {courseLis.map((course, index) => (
+                                        <React.Fragment key={index}>
+                                            <FormControlLabel
+                                                value={course.course_name}
+                                                control={<Radio />}
+                                                label={course.course_name}
+                                            />
+                                            <Box sx={{ width: { xs: "100%", md: "200%" } }}>
+                                                <LinearProgressWithLabel sx={{ borderRadius: 50, p: 1 }} value={1} />
+                                            </Box>
+                                        </React.Fragment>
+                                    ))}
+                                </RadioGroup>
+                            </FormControl>
+                        </Stack>
+                    )}
 
-                    <Paper elevation={0} sx={{
-                        p: 3, overflowY: "scroll", scrollbarWidth: 0, maxHeight: 400, overflowX: { xs: "scroll", md: "hidden" }, mr: { md: 0, xs: 0 }, '&::-webkit-scrollbar': {
-                            display: 'none',
-                        }, '-ms-overflow-style': 'none', mb: 2
+                    <Paper elevation={2} sx={{
+                        p: 3, overflowY: "scroll", maxHeight: 400, mr: { md: 0, xs: 0 }, mb: 2,
+                        '&::-webkit-scrollbar': { display: 'none' }, '-ms-overflow-style': 'none'
                     }}>
-                        <Stack flexDirection={show ? { xs: "row", md: 'column' } : { xs: "column" }} display={"flex"} justifyContent={!show ? { xs: "start", md: 'center' } : "start"} gap={2} maxWidth={{ md: 480, xs: 200 }}>
-                            {filteredImages.map(item => (
-                                <Stack key={item.name}>
-                                    <Paper elevation={0} sx={{ bgcolor: "white", width: { md: 400, xs: 200 }, alignItems: "center", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                        <img src={item.image} alt={item.name} width={'100%'} onClick={() => navigate.push(`/tube/${item.id}?name=${item.videoId}/article_name= ${item.name}`)} />
-                                        <Link underline="hover" target="_blank" fontSize={{ xs: 20, md: 25 }} textAlign={'center'} fontStyle={"italic"} href={`/tube/${item.id}?name=${item.videoId}/article_name= ${item.name}`}>{item.title}</Link>
-                                        {/* href={`/tube/${item.id}?name=${item.id}/article_name= ${hrefLinkWord}`} */}
-                                    </Paper>
-                                </Stack>
-                            ))}
+                        <Stack flexDirection={show ? { xs: "row", md: 'column' } : { xs: "column" }} gap={2} maxWidth={{ md: 480, xs: 200 }}>
+                        {videos.map((item) => (
+    <Paper 
+        key={item.id} 
+        onClick={() => (setSelectedVideo(item.id),console.log(item.id))} // Set selected video on click
+        elevation={1}
+        sx={{
+            bgcolor: "whitesmoke",
+            width: { md: 400, xs: 200 },
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            p: 2,
+            border: selectedVideo === item.id ? '2px solid blue' : 'none', // Apply border conditionally
+            cursor: 'pointer'
+        }}
+    >
+        <img src={item.thumbnail} style={{ borderRadius: 10 }} alt={item.title} width={'100%'} />
+        <Link underline="hover" fontSize={{ xs: 15, md: 20 }} marginTop={2} textAlign={{md:'center'}} fontStyle={"italic"} href='#'>
+            {item.title}
+        </Link>
+    </Paper>
+))}
+
                         </Stack>
                     </Paper>
                 </Stack>
 
-                <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} gap={3} justifyContent={"space-between"}>
-                    <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} gap={{ md: 5 }} justifyContent={"space-between"}>
+                <Stack display="flex" flexDirection={{ md: "row", xs: 'column' }} gap={3} justifyContent="space-between">
+                    <Stack display="flex" flexDirection={{ md: "row", xs: 'column' }} gap={2}>
                         <Button variant="text" sx={{ color: "black" }}>+ Add to Database</Button>
-                        <Button variant="contained" color="success"><West sx={{ mr: 1 }} />Select</Button>
+                        <Button variant="contained" color="success" onClick={handleAddToWatched}><West sx={{ mr: 1 }} />Select</Button>
                     </Stack>
 
-                    <Stack display={"flex"} flexDirection={{ md: "row", xs: 'column' }} gap={{ md: 5 }} justifyContent={"space-between"}>
-                        <Button variant="contained" color="error"><East sx={{ mr: 1 }} />Delete</Button>
+                    <Stack display="flex" flexDirection={{ md: "row", xs: 'column' }} gap={2}>
+                        <Button variant="contained" color="error" onClick={handleDeleteFromWatched} ><East sx={{ mr: 1 }} />Delete</Button>
                         <Button variant="text" sx={{ color: "black" }}> 🗑️ Remove from Results</Button>
                     </Stack>
                 </Stack>
             </Paper>
+
+            <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbarMessage === 'Video added to Database' ? 'success' : 'error'} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openSnackbar2}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbarMessage2 === 'Video removed from Database' ? 'success' : 'error'} sx={{ width: '100%' }}>
+          {snackbarMessage2}
+        </Alert>
+      </Snackbar>
         </Stack>
     );
 };

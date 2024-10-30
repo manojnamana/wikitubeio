@@ -81,7 +81,7 @@ const Register = () => {
       setSnackbarMessage('Password and Confirm Password Should Be Same');
       setOpenSnackbar(true);
     } else if (!validateDateOfBirth(dateOfBirth)) {
-      setSnackbarMessage('Please enter a valid date of birth (dd/mm/yyyy) between 2009 and the current year.');
+      setSnackbarMessage('Please enter a valid date of birth (dd/mm/yyyy) above 2009 ');
       setOpenSnackbar(true);
     } else if (!validatePhoneNumber()) {
       setSnackbarMessage(`Phone number is invalid for the selected country code (${countryCode}).`);

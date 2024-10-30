@@ -33,6 +33,7 @@ export interface Hyperlink {
   }
   
   export interface ArticleTypes {
+    articles: any;
     userperformance: number;
     id: number;
     course_name: number;

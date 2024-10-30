@@ -9,6 +9,9 @@ import Link from '@mui/material/Link';
 import { Apple, FacebookRounded, Google } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
+
 
 const Login = () => {
   const [email, setEmail] = React.useState('');
@@ -17,6 +20,7 @@ const Login = () => {
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [waiting, setwaiting] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState('');
+
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event: { preventDefault: () => any; }) => event.preventDefault();
@@ -36,18 +40,19 @@ const Login = () => {
       setOpenSnackbar(true);
     } else {
 
-      // setSnackbarMessage('Login successful!');
-      // setOpenSnackbar(true);
-      // setTimeout(() => navigate.push("/directory"), 3000); 
       setwaiting(true)
       try{
         setwaiting(true)
         const response =  await axios.post('https://wikitube-new.vercel.app/api/login/', { email, password, });
+        
         if (response.status === 200) {
+          
           setSnackbarMessage('Login successful!');
           setwaiting(false)
           setOpenSnackbar(true);
+          Cookies.set('access_token', response.data.access, { expires: 7 });
           setTimeout(() => navigate.push("/landing"), 3000); 
+        
       }
     }catch(error:any){
       setwaiting(false)
@@ -56,6 +61,7 @@ const Login = () => {
       }
     }
   };
+
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);

@@ -73,7 +73,7 @@ const Directory = ({
       const targetLanguage = targetLanguageMap[selectedLang];
 
       const response = await axios.post('/api/translate', {
-        text: [article_name, ' Quiz', `,${translatedQuestion}`],
+        text: [article_name, `${article_name} Quiz`, `,${translatedQuestion}`],
         targetLanguage,
       });
 
@@ -149,6 +149,7 @@ const Directory = ({
   };
 
   const splittingDescription = description.split('\r\n');
+ 
 
   return (
     <>
@@ -223,7 +224,7 @@ const Directory = ({
                 fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"}
                 sx={{ py: 1 }}
               >
-                {translatedQuizName}
+                 {translatedQuizName}
               </Typography>
               <hr />
               {quizzes.map((quiz) => (
