@@ -149,12 +149,12 @@ const Login = () => {
         <Link href="/forgotpassword" style={{ textDecoration: "none", fontSize: 20 }} textAlign={"center"}>Forgot password ?</Link>
         </Stack>
 
-        <Stack mt={3}>
+        {/* <Stack mt={3}>
         <Chip variant="filled" label ="Login with Google"  icon={<Google style={{color:'white'}} />} color='error' />
         <Chip variant="filled" label ="Login with Facebook" color='primary' icon={<FacebookRounded />} sx={{ mt: 2,}} />
         
         <Chip variant="outlined" label ="Login with Apple"  icon={<Apple style={{color:'white'}} />} sx={{ my: 2 ,color:"white",backgroundColor:"black"}} />
-        </Stack>
+        </Stack> */}
       </Paper>
       </Grid>
       <Snackbar

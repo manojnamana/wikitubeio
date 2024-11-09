@@ -4,6 +4,7 @@ import { ArticleTypes } from '@/types/articleTypes';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import NotFound from '../NotFound';
 
 const Article = () => {
   const [articleData, setArticleData] = useState<ArticleTypes | null>(null);
@@ -19,12 +20,13 @@ const Article = () => {
       if(!article_name) return null
       try {
         const response = await axios.get(`https://wikitube-new.vercel.app/api/articles/${article_name}/`);
-        // console.log(response.data)
+            
         if (response.status === 200) {
           setArticleData(response.data)
           setWaiting(false);
         } else {
           console.error(`Error: ${response.status} - ${response.statusText}`);
+          
         }
       } catch (error) {
         console.error("Error fetching article:", error);
@@ -38,7 +40,7 @@ const Article = () => {
   }, [article_name]);
 
    if (waiting) return <Loading/>; // Show loading state while waiting for data
-  if (!articleData) return null; // Handle case where no data is returned
+  if (!articleData) return <NotFound/>; // Handle case where no data is returned
 
   return (
     <Directory 

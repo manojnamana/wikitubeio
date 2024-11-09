@@ -8,6 +8,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { MuiPhone } from '@/src/components/MuiPhone';
 
 const Register = () => {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -58,15 +59,7 @@ const Register = () => {
     return true;
   };
 
-  const validatePhoneNumber = () => {
-    const phoneRegex: Record<'+91' | '+1' | '+44', RegExp> = {
-      '+91': /^\d{10}$/, // 10 digits for India
-      '+1': /^\d{10}$/,  // 10 digits for US
-      '+44': /^\d{10}$/, // 10 digits for UK
-    };
-
-    return phoneRegex[countryCode].test(phonenumber);
-  };
+  
 
   const handleSubmit = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
@@ -83,8 +76,9 @@ const Register = () => {
     } else if (!validateDateOfBirth(dateOfBirth)) {
       setSnackbarMessage('Please enter a valid date of birth (dd/mm/yyyy) above 2009 ');
       setOpenSnackbar(true);
-    } else if (!validatePhoneNumber()) {
-      setSnackbarMessage(`Phone number is invalid for the selected country code (${countryCode}).`);
+    } else if ((phonenumber.length === 0 || phonenumber.length<15)) {
+      console.log(phonenumber.length)
+      setSnackbarMessage(`Please Enter Valid Phone Number`);
       setOpenSnackbar(true);
     } else {
       setwaiting(true);
@@ -94,7 +88,7 @@ const Register = () => {
           last_name: lastName,
           email,
           password: confPassword,
-          phone_number: `${countryCode}${phonenumber}`,
+          phone_number: `${phonenumber}`,
           date_of_birth: dateOfBirth,
           gender,
         });
@@ -231,8 +225,8 @@ const Register = () => {
 
               <Grid xs={12}>
                 <FormControl  variant="outlined" sx={{width:"95%"}}>
-                  <Stack flexDirection={"row"} sx={{ ml: 2, width: { md: '100%', xs: "95%" } }}>
-                <Select
+                  <Stack flexDirection={"row"} sx={{ ml: 2, width: { md: '100%', xs: "100%" },mb:2 }}>
+                {/* <Select
                     labelId="CountryCodeLabel"
                     id="countryCode"
                     required
@@ -253,7 +247,8 @@ const Register = () => {
                     onChange={(e) => setPhonenumber(e.target.value)}
                     sx={{ mb: 3,width:"100%" }}
                     helperText={!validatePhoneNumber() && phonenumber.length > 0 ? "Invalid phone number length" : ""}
-                  />
+                  /> */}
+                  <MuiPhone value={phonenumber} onChange={setPhonenumber} />
                   </Stack>
                 </FormControl>
               </Grid>

@@ -46,6 +46,7 @@ const CarouselComponent: React.FC<CarouselComponentProps> = ({ hrefLinkWord }) =
 
     fetchVideos();
   }, [hrefLinkWord]);
+  console.log(hrefLinkWord)
 
   if (waiting) return <Loading />;
 

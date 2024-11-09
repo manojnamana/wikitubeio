@@ -197,7 +197,7 @@ const Directory = ({
               fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"}
               sx={{ pt: 5, pb: 1 }}
             >
-              {translatedName} {/* Updated to use translated article_name */}
+              {article_name} {/* Updated to use translated article_name */}
             </Typography>
             <hr />
             <Paper elevation={3} sx={{ mt: 3, p: 2 }}>
@@ -224,7 +224,7 @@ const Directory = ({
                 fontFamily={"'Linux Libertine','Georgia','Times','Source Serif Pro',serif"}
                 sx={{ py: 1 }}
               >
-                 {translatedQuizName}
+                 {article_name} Quiz
               </Typography>
               <hr />
               {quizzes.map((quiz) => (
