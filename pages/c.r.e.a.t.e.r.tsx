@@ -200,11 +200,11 @@ const handleCloseSnackbar = () => {
                         <Typography fontSize={25} fontWeight="bold">C.R.E.A.T.E.R.</Typography>
                     </Stack>
 
-                    {/* <Stack display="flex" flexDirection="row" gap={2}>
+                    <Stack display="flex" flexDirection="row" gap={2}>
                         <Button variant="contained" style={{ borderRadius: 50 }} color="success">Go!</Button>
                         <Button variant="contained" style={{ borderRadius: 50 }} color="secondary">Repeat?</Button>
                         <Button variant="contained" style={{ borderRadius: 50 }} color="primary">𝕏</Button>
-                    </Stack> */}
+                    </Stack>
                 </Stack>
 
                 <Stack display="flex" flexDirection={{ md: "row", xs: 'column' }} marginTop={2} justifyContent={show ? 'space-between' : 'center'}>
