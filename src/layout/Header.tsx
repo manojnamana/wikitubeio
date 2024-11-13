@@ -13,8 +13,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Avatar, Button, Link } from '@mui/material';
-import { Logout, VolunteerActivism } from '@mui/icons-material';
+import { Height, Logout, VolunteerActivism } from '@mui/icons-material';
 import router from 'next/router';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,8 +58,70 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
   const [article_name, setArticle_name] = React.useState('');
-
+  const[fullname,setFullname]=React.useState("")
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  function stringToColor(string: string) {
+    let hash = 0;
+    let i;
+  
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+  
+    let color = '#';
+  
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.slice(-2);
+    }
+    /* eslint-enable no-bitwise */
+  
+    return color;
+  }
+  
+  function stringAvatar(name: string) {
+    return {
+      sx: {
+        bgcolor: stringToColor(name),
+        width:45,
+        Height:30
+      },
+      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    };
+  }
+  const bearer_token = (Cookies.get('access_token'))
+
+
+  React.useEffect(()=>{
+
+    const gettinUserId = async()=>{
+
+           try{
+       const getID = await axios.get('https://wikitube-new.vercel.app/api/dashboard/',{
+         headers: {
+                 Authorization: `Bearer ${bearer_token}`
+             }
+        })
+        if (getID.status===200){
+
+            setFullname(getID.data.full_name)
+
+
+       }
+
+    }
+    catch(err){
+        console.error('error')
+        
+    }
+
+    }
+
+    gettinUserId()
+
+},[bearer_token])
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -99,8 +163,9 @@ export default function Header() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={()=>{router.push('/dashboard')}}>
         <IconButton
+          href='/dashboard'
           size="large"
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -108,7 +173,7 @@ export default function Header() {
           color="inherit"
         >
           <AccountCircle />
-        </IconButton>
+        </IconButton >
         <p>Profile</p>
       </MenuItem>
       <MenuItem>
@@ -167,15 +232,18 @@ export default function Header() {
             </Box>
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <IconButton
-                size="large"
+                size="small"
                 edge="end"
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
                 color="primary"
+                href='/dashboard'
               >
-                <AccountCircle sx={{ color: "black", fontSize: 30 }} />
+                 {fullname?<Avatar {...stringAvatar(fullname)} />:<Avatar  sx={{  width: 30,height:30 }}/>}
+                
+                {/* <AccountCircle sx={{ color: "black", fontSize: 30 }} /> */}
               </IconButton>
               <Button variant="contained" href="/" color='primary' sx={{ marginRight: 3, marginLeft: 3, marginTop: 0.8, height: 40 }}>Logout</Button>
               <Button variant="contained" color='primary' sx={{ height: 40, marginTop: 0.8 }}>Donate</Button>

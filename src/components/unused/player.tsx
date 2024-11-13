@@ -23,7 +23,7 @@ import { styled } from "@mui/material/styles";
 import * as React from "react";
 import axios from "axios";
 import { ArticleTypes } from "@/types/articleTypes";
-import Loading from "./loading";
+import Loading from "../loading";
 import { useRouter } from "next/router";
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({

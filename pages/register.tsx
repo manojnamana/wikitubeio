@@ -74,9 +74,9 @@ const Register = () => {
       setSnackbarMessage('Password and Confirm Password Should Be Same');
       setOpenSnackbar(true);
     } else if (!validateDateOfBirth(dateOfBirth)) {
-      setSnackbarMessage('Please enter a valid date of birth (dd/mm/yyyy) above 2009 ');
+      setSnackbarMessage('Please enter a valid date of birth (YYYY-MM-DD) above 2009 ');
       setOpenSnackbar(true);
-    } else if ((phonenumber.length === 0 || phonenumber.length<15)) {
+    } else if ((phonenumber.length === 3 || phonenumber.length<15)) {
       console.log(phonenumber.length)
       setSnackbarMessage(`Please Enter Valid Phone Number`);
       setOpenSnackbar(true);
@@ -88,7 +88,7 @@ const Register = () => {
           last_name: lastName,
           email,
           password: confPassword,
-          phone_number: `${phonenumber}`,
+          phone_number: phonenumber,
           date_of_birth: dateOfBirth,
           gender,
         });

@@ -4,7 +4,7 @@ import axios from "axios";
 import { ArticleTypes } from "@/types/articleTypes";
 import Loading from "../loading";
 import { useRouter } from "next/router";
-import VideoDetailsPage from "../name";
+import VideoDetailsPage from "../VideoDetailsPage";
 
 const Player = () => {
   const [correctAns, setCorrectAns] = React.useState(false);
