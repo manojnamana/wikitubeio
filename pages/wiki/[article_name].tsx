@@ -4,7 +4,8 @@ import { ArticleTypes } from '@/types/articleTypes';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import NotFound from '../NotFound';
+import NotFound from '../404';
+
 
 const Article = () => {
   const [articleData, setArticleData] = useState<ArticleTypes | null>(null);

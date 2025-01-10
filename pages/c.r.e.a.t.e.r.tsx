@@ -202,7 +202,7 @@ const handleCloseSnackbar = () => {
 
                     <Stack display="flex" flexDirection="row" gap={2}>
                         <Button variant="contained" style={{ borderRadius: 50 }} color="success">Go!</Button>
-                        <Button variant="contained" style={{ borderRadius: 50 }} color="secondary">Repeat?</Button>
+                        {/* <Button variant="contained" style={{ borderRadius: 50 }} color="secondary">Repeat?</Button> */}
                         <Button variant="contained" style={{ borderRadius: 50 }} color="primary">𝕏</Button>
                     </Stack>
                 </Stack>

@@ -111,7 +111,7 @@ const Changepassword = () => {
             <Button color='inherit'  href="/dashboard" sx={{backgroundColor:"#f8f9fa"}}>dashboard</Button>
             <Button color='inherit' href="/editprofile" sx={{backgroundColor:"#f8f9fa"}}>Edit Profile</Button>
             <Button color='inherit' href="/changepassword" sx={{backgroundColor:"#f8f9fa"}}>Change Password</Button>
-            <Button color='inherit' href="/" sx={{backgroundColor:"#f8f9fa"}}>Logout</Button>
+            <Button color='inherit' href="/" sx={{backgroundColor:"#f8f9fa"}}onClick={()=>(Cookies.remove('access_token'))}>Logout</Button>
         </Paper>
         </Grid>
         <Grid item xs={12} md={8.8}>

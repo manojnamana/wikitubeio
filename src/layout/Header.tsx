@@ -182,6 +182,7 @@ export default function Header() {
           color="inherit"
           href='/'
           sx={{ fontSize: 17 }}
+          onClick={()=>{Cookies.remove('access_token')}}
         >
           <Logout sx={{ mr: 2 }} />
           Logout
@@ -245,7 +246,7 @@ export default function Header() {
                 
                 {/* <AccountCircle sx={{ color: "black", fontSize: 30 }} /> */}
               </IconButton>
-              <Button variant="contained" href="/" color='primary' sx={{ marginRight: 3, marginLeft: 3, marginTop: 0.8, height: 40 }}>Logout</Button>
+              <Button variant="contained" href="/" color='primary' onClick={()=>{Cookies.remove('access_token')}} sx={{ marginRight: 3, marginLeft: 3, marginTop: 0.8, height: 40 }}>Logout</Button>
               <Button variant="contained" color='primary' sx={{ height: 40, marginTop: 0.8 }}>Donate</Button>
             </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

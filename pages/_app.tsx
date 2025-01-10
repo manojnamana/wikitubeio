@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // Define the routes where you do NOT want to show the Layout (header/footer)
   const noLayoutRoutes = ["/", "/register",'/forgotpassword','/resetpassword',
-    '/landing','/NotFound','/dashboard','/editprofile','/changepassword',
+    '/landing','/404','/dashboard','/editprofile','/changepassword',
     ];
 
   // Check if the current route is in the noLayoutRoutes array
