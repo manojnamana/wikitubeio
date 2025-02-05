@@ -67,7 +67,7 @@ const Login = () => {
     setOpenSnackbar(false);
   };
   const handleGoogleLogin = () => {
-    window.location.href = 'https://wikitube-new.vercel.app/account/google-login/';
+    window.location.href = 'https://wikitube-new.vercel.app/accounts/google/login/';
   };
   
 
