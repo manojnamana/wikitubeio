@@ -25,9 +25,9 @@ export function middleware(req: NextRequest) {
   );
 
   // Redirect to home if unauthenticated and trying to access a protected route
-  if (isProtected && !isAuthenticated) {
-    return NextResponse.redirect(new URL('/', req.url));
-  }
+  // if (isProtected && !isAuthenticated) {
+  //   return NextResponse.redirect(new URL('/', req.url));
+  // }
 
   return NextResponse.next();
 }
