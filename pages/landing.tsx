@@ -28,10 +28,11 @@ const Landing = () => {
   useEffect(() => {
     // Extract token from URL
     const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
+    //const token = urlParams.get("token");
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='));
 
     if (token) {
-      Cookies.set("access_token", token, { expires: 7, secure: true });
+      Cookies.set("access_token", token, { expires: 1800, secure: true });
       router.replace("/landing"); // Remove token from URL
     }
   }, [router]);

@@ -39,7 +39,7 @@ export function middleware(req: NextRequest) {
 
   // List of protected routes
   const protectedPaths = [
-    '/landing',
+    
     '/tube',
     '/wiki',
     '/404',
