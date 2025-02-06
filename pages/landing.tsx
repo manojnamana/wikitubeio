@@ -16,40 +16,37 @@
 // }
 
 // export default Landing;
-
-
-
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
-import { Button, Stack } from '@mui/material';
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import { Button, Stack } from "@mui/material";
 
 const Landing = () => {
   const router = useRouter();
-  const article_name = 'calculus';
+  const article_name = "calculus";
 
   useEffect(() => {
     // Extract token from URL
     const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
+    const token = urlParams.get("token");
 
     if (token) {
-      Cookies.set('access_token', token, { expires: 7, secure: true });
-      router.replace('/landing'); // Remove token from URL
+      Cookies.set("access_token", token, { expires: 7, secure: true });
+      router.replace("/landing"); // Remove token from URL
     }
   }, [router]);
 
   return (
     <>
-      <Stack sx={{ overflowY: 'hidden' }}>
+      <Stack sx={{ overflowY: "hidden" }}>
         <img
           src="/static/images/creater.jpeg"
           alt="creater"
           style={{ height: 625 }}
-          width={'100%'}
+          width={"100%"}
         />
       </Stack>
-      <Stack alignItems={'center'} bgcolor={'#0b0b0b'}>
+      <Stack alignItems={"center"} bgcolor={"#0b0b0b"}>
         <Button
           onClick={() => {
             router.push(`/wiki/${article_name}`);
@@ -57,11 +54,11 @@ const Landing = () => {
           variant="outlined"
           sx={{
             borderRadius: 5,
-            fontWeight: 'bold',
+            fontWeight: "bold",
             borderWidth: 0,
             m: 2,
-            bgcolor: 'white',
-            '&:hover': { bgcolor: '#3B71CA', color: 'white' },
+            bgcolor: "white",
+            "&:hover": { bgcolor: "#3B71CA", color: "white" },
           }}
         >
           Remix With Web
@@ -72,3 +69,59 @@ const Landing = () => {
 };
 
 export default Landing;
+
+
+
+// import { useEffect } from 'react';
+// import { useRouter } from 'next/router';
+// import Cookies from 'js-cookie';
+// import { Button, Stack } from '@mui/material';
+
+// const Landing = () => {
+//   const router = useRouter();
+//   const article_name = 'calculus';
+
+//   useEffect(() => {
+//     // Extract token from URL
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const token = urlParams.get('token');
+
+//     if (token) {
+//       Cookies.set('access_token', token, { expires: 7, secure: true });
+//       router.replace('/landing'); // Remove token from URL
+//     }
+//   }, [router]);
+
+//   return (
+//     <>
+//       <Stack sx={{ overflowY: 'hidden' }}>
+//         <img
+//           src="/static/images/creater.jpeg"
+//           alt="creater"
+//           style={{ height: 625 }}
+//           width={'100%'}
+//         />
+//       </Stack>
+//       <Stack alignItems={'center'} bgcolor={'#0b0b0b'}>
+//         <Button
+//           onClick={() => {
+//             router.push(`/wiki/${article_name}`);
+//           }}
+//           variant="outlined"
+//           sx={{
+//             borderRadius: 5,
+//             fontWeight: 'bold',
+//             borderWidth: 0,
+//             m: 2,
+//             bgcolor: 'white',
+//             '&:hover': { bgcolor: '#3B71CA', color: 'white' },
+//           }}
+//         >
+//           Remix With Web
+//         </Button>
+//       </Stack>
+//     </>
+//   );
+// };
+
+// export default Landing;
