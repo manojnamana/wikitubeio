@@ -11,18 +11,18 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const fetchGoogleToken = async () => {
-  try {
-      const response = await axios.get('https://wikitube-new.vercel.app/api/google-token/', { withCredentials: true });
+// const fetchGoogleToken = async () => {
+//   try {
+//       const response = await axios.get('https://wikitube-new.vercel.app/api/google-token/', { withCredentials: true });
 
-      if (response.data.access_token) {
-          // Store token in cookies
-          Cookies.set('access_token', response.data.access_token, { secure: true, sameSite: 'Lax' });
-      }
-  } catch (error) {
-      console.error("Error fetching access token:", error);
-  }
-};
+//       if (response.data.access_token) {
+//           // Store token in cookies
+//           Cookies.set('access_token', response.data.access_token, { secure: true, sameSite: 'Lax' });
+//       }
+//   } catch (error) {
+//       console.error("Error fetching access token:", error);
+//   }
+// };
 
 
 const Login = () => {
@@ -78,18 +78,18 @@ const Login = () => {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
-  React.useEffect(() => {
-    const fetchToken = async () => {
-        try {
-            console.log("Fetching Google token...");
-            await fetchGoogleToken();
-            console.log("Google token fetched successfully!");
-        } catch (error) {
-            console.error("Error fetching Google token:", error);
-        }
-    };
-    fetchToken();
-}, []);
+//   React.useEffect(() => {
+//     const fetchToken = async () => {
+//         try {
+//             console.log("Fetching Google token...");
+//             await fetchGoogleToken();
+//             console.log("Google token fetched successfully!");
+//         } catch (error) {
+//             console.error("Error fetching Google token:", error);
+//         }
+//     };
+//     fetchToken();
+// }, []);
 
   const handleGoogleLogin = () => {
     window.location.href = 'https://wikitube-new.vercel.app/accounts/google/login/';
